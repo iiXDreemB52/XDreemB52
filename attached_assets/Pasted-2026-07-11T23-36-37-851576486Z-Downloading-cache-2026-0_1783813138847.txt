@@ -1,0 +1,28 @@
+2026-07-11T23:36:37.851576486Z ==> Downloading cache...
+2026-07-11T23:36:37.918468273Z ==> It looks like we don't have access to your repo, but we'll try to clone it anyway.
+2026-07-11T23:36:37.918495963Z ==> Cloning from https://github.com/iiXDreemB52/XDreemB52
+2026-07-11T23:36:39.95312161Z ==> Checking out commit 9834f3a0ea6119283d5d56ad8c00bb07642eb57a in branch main
+2026-07-11T23:36:47.890191872Z ==> Downloaded 94MB in 3s. Extraction took 7s.
+2026-07-11T23:36:50.345315387Z ==> Installing dependencies with pnpm...
+2026-07-11T23:36:50.508199211Z ==> Using Node.js version 24.14.1 (default)
+2026-07-11T23:36:50.508221172Z ==> Docs on specifying a Node.js version: https://render.com/docs/node-version
+2026-07-11T23:36:53.627768856Z ==> Running build command 'pnpm install && pnpm --filter @workspace/tournament run build'...
+2026-07-11T23:36:57.107557905Z 
+2026-07-11T23:36:57.107583795Z > @workspace/tournament@0.0.0 build /opt/render/project/src/artifacts/tournament
+2026-07-11T23:36:57.107590235Z > vite build --config vite.config.ts
+2026-07-11T23:36:57.107593485Z 
+2026-07-11T23:36:57.591747851Z vite v7.3.5 building client environment for production...
+2026-07-11T23:36:57.709993481Z transforming...
+2026-07-11T23:36:59.763762891Z ✓ 55 modules transformed.
+2026-07-11T23:37:00.088709981Z rendering chunks...
+2026-07-11T23:37:00.111995636Z computing gzip size...
+2026-07-11T23:37:00.130219015Z dist/public/index.html                                           1.83 kB │ gzip:   0.74 kB
+2026-07-11T23:37:00.130274206Z dist/public/assets/ik3mo-bg-1280_1782771571176-R0S7qnTU.jpg     56.36 kB
+2026-07-11T23:37:00.130375417Z dist/public/assets/kemo1_1.icon_1782771567876-D2hwv7Wk.png      76.36 kB
+2026-07-11T23:37:00.130387527Z dist/public/assets/تصميم بدون عنوان-DeRQxXmh.png             6,389.99 kB
+2026-07-11T23:37:00.13058439Z dist/public/assets/index-r2rQsbET.css                           18.80 kB │ gzip:   4.54 kB
+2026-07-11T23:37:00.13059073Z dist/public/assets/index-xEn4XqAq.js                           337.24 kB │ gzip: 104.85 kB
+2026-07-11T23:37:00.131040456Z ✓ built in 2.49s
+2026-07-11T23:37:00.257497013Z ==> Publish directory dist/public does not exist!
+2026-07-11T23:37:00.257515373Z ==> Build failed 😞
+2026-07-11T23:37:00.257519133Z ==> Common ways to troubleshoot your deploy: https://render.com/docs/troubleshooting-deploys
