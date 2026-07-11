@@ -1,0 +1,18 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "tournament-dev",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["-y", "pnpm@10", "--filter", "@workspace/tournament", "run", "dev"],
+      "port": 3000
+    },
+    {
+      "name": "site-local",
+      "runtimeExecutable": "node",
+      "runtimeArgs": ["scripts/start-local.mjs"],
+      "port": 10000,
+      "autoPort": true
+    }
+  ]
+}
