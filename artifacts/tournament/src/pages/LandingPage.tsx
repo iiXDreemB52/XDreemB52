@@ -252,13 +252,21 @@ export default function LandingPage() {
           font-weight: 900;
           letter-spacing: .5px;
           font-family: Cairo, Tajawal, sans-serif;
-          background: linear-gradient(180deg, #FFE066 0%, #FFC63A 40%, #FFA500 100%);
+          background: linear-gradient(180deg, #FFF3B0 0%, #FFD23A 45%, #FF8C00 100%);
           -webkit-background-clip: text;
           background-clip: text;
+          -webkit-text-fill-color: transparent;
           color: transparent;
-          -webkit-text-stroke: 2px #5a1200;
+          -webkit-text-stroke: 3px #3a0900;
           paint-order: stroke fill;
-          text-shadow: 0 3px 0 #5a1200;
+          /* حد غامق متعدد الطبقات كبديل يشتغل بكل المتصفحات (Firefox ما يدعم text-stroke) */
+          text-shadow:
+            -2px -2px 0 #3a0900,
+             2px -2px 0 #3a0900,
+            -2px  2px 0 #3a0900,
+             2px  2px 0 #3a0900,
+             0    4px 0 #2a0600,
+             0    0  18px rgba(0,0,0,.35);
           animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
           direction: ltr;
           line-height: 1.1;
@@ -283,9 +291,9 @@ export default function LandingPage() {
         .hero__divider {
           position: absolute;
           bottom: 0; left: 0; right: 0;
-          height: 4px;
-          background: linear-gradient(90deg, transparent 0%, #CC2200 20%, #FF4400 50%, #CC2200 80%, transparent 100%);
-          box-shadow: 0 0 12px rgba(255,60,0,.7), 0 0 24px rgba(255,60,0,.35);
+          height: 6px;
+          background: linear-gradient(90deg, transparent 0%, #B31C00 15%, #FF3300 50%, #B31C00 85%, transparent 100%);
+          box-shadow: 0 0 16px rgba(200,30,0,.8), 0 0 30px rgba(200,30,0,.4);
           z-index: 6;
         }
 
