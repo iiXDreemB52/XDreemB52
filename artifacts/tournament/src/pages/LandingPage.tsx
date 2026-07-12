@@ -202,7 +202,10 @@ export default function LandingPage() {
           display: block;
           user-select: none;
           -webkit-user-drag: none;
+          /* multiply يجعل الخلفية الصفراء تختفي على الخلفية البرتقالية */
           mix-blend-mode: multiply;
+          /* تعزيز التباين لإبراز الشعار */
+          filter: contrast(1.08) saturate(1.1);
         }
 
         /* اسم الموقع */
