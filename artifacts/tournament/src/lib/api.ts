@@ -1,7 +1,8 @@
 import { useEffect, useRef, useState } from "react";
 import type { TournamentState, Winner, TournamentArchive, TournamentRecord } from "./types";
 
-const BASE = "/api/tournament";
+const API_ORIGIN = import.meta.env.VITE_API_URL ?? "";
+const BASE = `${API_ORIGIN}/api/tournament`;
 
 export async function getState(): Promise<TournamentState> {
   const res = await fetch(`${BASE}/state`);
