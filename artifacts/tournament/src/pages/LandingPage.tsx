@@ -1,7 +1,11 @@
 import { useEffect, useMemo, useState } from "react";
-import flameLeft  from "@assets/flame-left.png";
-import flameRight from "@assets/flame-right.png";
-import bombLogo   from "@assets/kemo1_1.icon_1782771567876.png";
+
+// الأصول الجديدة
+import heroBg    from "@assets/image_1783877889862.png";
+import flameImg  from "@assets/{64348214-982E-42FF-A844-8C07F8096007}_1783877846358.png";
+import bombLogo  from "@assets/image-0_1783877865511.png";
+import titleImg  from "@assets/{6DCA218D-AAED-4493-B8C3-6AB24C769880}_1783877858889.png";
+
 import { getRecords, useSSE } from "@/lib/api";
 import { type TournamentRecord } from "@/lib/types";
 
@@ -9,23 +13,20 @@ import { type TournamentRecord } from "@/lib/types";
 function Lightning({ flip = false }: { flip?: boolean }) {
   return (
     <svg
-      width="56" height="18"
-      viewBox="0 0 56 18"
+      width="48" height="16"
+      viewBox="0 0 48 16"
       style={{ flexShrink: 0, transform: flip ? "scaleX(-1)" : "none" }}
     >
-      {/* خط علوي */}
-      <line x1="0" y1="7"  x2="52" y2="7"  stroke="#7a1800" strokeWidth="1.5" strokeLinecap="round"/>
-      {/* خط سفلي */}
-      <line x1="0" y1="11" x2="52" y2="11" stroke="#7a1800" strokeWidth="1.5" strokeLinecap="round"/>
-      {/* سهم برق */}
-      <path d="M36 2 L44 9 L36 16 L39 9 Z" fill="#CC3300"/>
-      <path d="M28 4 L36 9 L28 14 L31 9 Z" fill="#FF5500" opacity=".7"/>
+      <line x1="0" y1="6"  x2="44" y2="6"  stroke="#7a1800" strokeWidth="1.4" strokeLinecap="round"/>
+      <line x1="0" y1="10" x2="44" y2="10" stroke="#7a1800" strokeWidth="1.4" strokeLinecap="round"/>
+      <path d="M30 1 L38 8 L30 15 L33 8 Z" fill="#CC3300"/>
+      <path d="M22 3 L30 8 L22 13 L25 8 Z" fill="#FF5500" opacity=".7"/>
     </svg>
   );
 }
 
 export default function LandingPage() {
-  const [records, setRecords]         = useState<TournamentRecord[]>([]);
+  const [records, setRecords]             = useState<TournamentRecord[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   useEffect(() => { getRecords().then(setRecords).catch(() => {}); }, []);
@@ -51,14 +52,14 @@ export default function LandingPage() {
 
         /* ── animations ── */
         @keyframes fadeIn    { from{opacity:0} to{opacity:1} }
-        @keyframes slideDown { from{opacity:0;transform:translateY(-18px)} to{opacity:1;transform:translateY(0)} }
-        @keyframes scaleIn   { 0%{opacity:0;transform:scale(.5)} 65%{transform:scale(1.06)} 100%{opacity:1;transform:scale(1)} }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes scaleIn   { 0%{opacity:0;transform:scale(.45)} 65%{transform:scale(1.08)} 100%{opacity:1;transform:scale(1)} }
         @keyframes cardIn    { from{opacity:0;transform:translateY(26px)} to{opacity:1;transform:translateY(0)} }
         @keyframes sheen     { 0%{transform:translateX(-130%) skewX(-22deg)} 100%{transform:translateX(230%) skewX(-22deg)} }
-        @keyframes rayIn     { from{opacity:0} to{opacity:1} }
         @keyframes rgbName   { 0%{color:#FF4500} 33%{color:#FFD700} 66%{color:#FF8C00} 100%{color:#FF4500} }
         @keyframes bobTrophy { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-5px)} }
-        @keyframes logoPulse { 0%,100%{filter:drop-shadow(0 0 18px rgba(255,120,0,.7))} 50%{filter:drop-shadow(0 0 38px rgba(255,200,0,.95))} }
+        @keyframes logoPulse { 0%,100%{filter:drop-shadow(0 0 20px rgba(255,130,0,.85))} 50%{filter:drop-shadow(0 0 42px rgba(255,210,0,1))} }
+        @keyframes flameIn   { from{opacity:0;transform:scaleX(var(--fx,1)) translateY(12px)} to{opacity:1;transform:scaleX(var(--fx,1)) translateY(0)} }
 
         /* ── root ── */
         .lp {
@@ -78,7 +79,7 @@ export default function LandingPage() {
         .hero {
           position: relative;
           width: 100%;
-          min-height: min(50vw, 460px);
+          min-height: min(46vw, 440px);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -86,153 +87,83 @@ export default function LandingPage() {
           flex-shrink: 0;
         }
 
-        /* خلفية متدرجة */
-        .hero__bg {
+        /* خلفية الصورة الحقيقية */
+        .hero__bg-img {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            168deg,
-            #FFD700 0%,
-            #FFC000 18%,
-            #FF8C00 52%,
-            #E05000 80%,
-            #C03000 100%
-          );
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          object-position: center;
+          z-index: 0;
+          pointer-events: none;
+          user-select: none;
         }
 
-        /* شعاعات الضوء */
+        /* شعاعات الضوء خفيفة فوق الصورة */
         .hero__rays {
           position: absolute;
           inset: 0;
           overflow: hidden;
           pointer-events: none;
+          z-index: 1;
         }
         .ray {
           position: absolute;
           top: -15%;
           height: 140%;
-          background: rgba(255,255,255,.13);
+          background: rgba(255,255,255,.09);
           transform: skewX(-18deg);
-          animation: rayIn .6s ease-out both;
         }
-        .ray:nth-child(1)  { left:  5%; width: 4%;   animation-delay:.04s }
-        .ray:nth-child(2)  { left: 11%; width: 2%;   background:rgba(255,255,255,.07); animation-delay:.07s }
-        .ray:nth-child(3)  { left: 19%; width: 7%;   animation-delay:.10s }
-        .ray:nth-child(4)  { left: 30%; width: 2.5%; background:rgba(255,255,255,.09); animation-delay:.13s }
-        .ray:nth-child(5)  { left: 50%; width: 5%;   animation-delay:.08s }
-        .ray:nth-child(6)  { left: 60%; width: 2%;   background:rgba(255,255,255,.08); animation-delay:.12s }
-        .ray:nth-child(7)  { left: 70%; width: 7%;   animation-delay:.06s }
-        .ray:nth-child(8)  { left: 82%; width: 2.5%; background:rgba(255,255,255,.07); animation-delay:.16s }
-        .ray:nth-child(9)  { left: 90%; width: 6%;   animation-delay:.03s }
+        .ray:nth-child(1)  { left: 22%; width: 3.5%; }
+        .ray:nth-child(2)  { left: 29%; width: 1.8%; background:rgba(255,255,255,.06); }
+        .ray:nth-child(3)  { left: 38%; width: 6%;   }
+        .ray:nth-child(4)  { left: 50%; width: 2%;   background:rgba(255,255,255,.07); }
+        .ray:nth-child(5)  { left: 58%; width: 4.5%; }
+        .ray:nth-child(6)  { left: 68%; width: 1.8%; background:rgba(255,255,255,.05); }
+        .ray:nth-child(7)  { left: 75%; width: 5.5%; }
 
-        /* لوحات جانبية شبه شفافة */
+        /* لوحات جانبية شبه شفافة — مثل المرجع */
         .hero__panels {
           position: absolute;
-          inset: 8% 0 12%;
+          inset: 10% 0 10%;
           display: flex;
           justify-content: space-between;
-          padding: 0 1.5%;
+          padding: 0 clamp(90px,13vw,180px);
           pointer-events: none;
           z-index: 2;
         }
-        .panels__left  { display: flex; gap: clamp(5px,1vw,10px); }
-        .panels__right { display: flex; gap: clamp(5px,1vw,10px); }
+        .panels__left  { display: flex; gap: clamp(6px,1.2vw,12px); }
+        .panels__right { display: flex; gap: clamp(6px,1.2vw,12px); }
         .panel {
-          width: clamp(28px,5.5vw,62px);
-          background: rgba(255,155,0,.18);
-          border: 1.5px solid rgba(255,210,80,.2);
-          border-radius: 4px;
+          width: clamp(30px,5.5vw,66px);
+          background: rgba(255,160,0,.14);
+          border: 1.5px solid rgba(255,220,80,.18);
+          border-radius: 5px;
         }
 
-        /* اللهب */
+        /* اللهب — كلا الجانبين نفس الصورة */
         .hero__flame {
           position: absolute;
           bottom: 0;
-          width: clamp(88px,15vw,190px);
+          height: 100%;
+          width: clamp(80px,13vw,170px);
+          object-fit: cover;
+          object-position: left center;
           z-index: 3;
           pointer-events: none;
-          animation: fadeIn .8s ease .3s both;
+          animation: flameIn .9s ease .2s both;
         }
-        .hero__flame--left  { left: 0; }
-        .hero__flame--right { right: 0; }
-
-        /* محتوى الهيرو */
-        .hero__content {
-          position: relative;
-          z-index: 5;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
-          gap: clamp(6px,1.4vw,14px);
-          padding: 20px 16px 28px;
-          animation: fadeIn .5s ease both;
+        .hero__flame--left  {
+          left: 0;
+          --fx: 1;
+          object-position: left center;
         }
-
-        /* هالة/توهج خلف الشعار */
-        .hero__logo-halo {
-          position: relative;
-          flex-shrink: 0;
-          animation: scaleIn .85s cubic-bezier(.22,1,.36,1) .1s both;
-        }
-        .hero__logo-halo::before {
-          content: "";
-          position: absolute;
-          inset: 10% 5% auto;
-          bottom: 10%;
-          border-radius: 50%;
-          background: radial-gradient(ellipse, rgba(0,0,0,.55) 30%, transparent 72%);
-          z-index: 0;
-          width: 92%;
-          height: 92%;
-          left: 4%;
-          top: 18%;
-        }
-        /* شعار القنبلة — نقص 28% من الأسفل لقطع نص الصورة */
-        .hero__logo-wrap {
-          position: relative;
-          z-index: 1;
-          width: clamp(110px,17vw,200px);
-          overflow: hidden;
-          height: calc(clamp(110px,17vw,200px) * 0.72);
-          animation: logoPulse 3s ease-in-out 1.2s infinite;
-        }
-        .hero__logo {
-          width: 100%;
-          height: auto;
-          display: block;
-          user-select: none;
-          -webkit-user-drag: none;
-          /* multiply يجعل الخلفية الصفراء تختفي على الخلفية البرتقالية */
-          mix-blend-mode: multiply;
-          /* تعزيز التباين لإبراز الشعار */
-          filter: contrast(1.08) saturate(1.1);
-        }
-
-        /* اسم الموقع */
-        .hero__name {
-          font-size: clamp(2rem,7vw,5.5rem);
-          font-weight: 900;
-          color: #3a0008;
-          letter-spacing: 1px;
-          line-height: 1;
-          text-shadow:
-            0 1px 0 rgba(255,215,80,.45),
-            0 3px 12px rgba(0,0,0,.18);
-          animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
-        }
-
-        /* سطر فرعي */
-        .hero__sub {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          animation: slideDown .65s cubic-bezier(.22,1,.36,1) .34s both;
-        }
-        .hero__sub-text {
-          font-size: clamp(.78rem,1.9vw,1.05rem);
-          font-weight: 700;
-          color: #5a0010;
-          white-space: nowrap;
+        .hero__flame--right {
+          right: 0;
+          --fx: -1;
+          transform: scaleX(-1);
+          object-position: left center;
         }
 
         /* شريط تنقل */
@@ -278,7 +209,70 @@ export default function LandingPage() {
           background: #fff;
           box-shadow: 0 0 8px #fff;
           flex-shrink: 0;
-          animation: fadeIn .3s ease .5s both;
+        }
+
+        /* محتوى الهيرو */
+        .hero__content {
+          position: relative;
+          z-index: 5;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: clamp(4px,1.2vw,12px);
+          padding: 20px 16px 30px;
+          animation: fadeIn .5s ease both;
+        }
+
+        /* شعار القنبلة — خلفية سوداء تختفي بـ screen */
+        .hero__logo-wrap {
+          animation: scaleIn .85s cubic-bezier(.22,1,.36,1) .1s both;
+          flex-shrink: 0;
+        }
+        .hero__logo {
+          width: clamp(120px,17vw,200px);
+          height: auto;
+          display: block;
+          user-select: none;
+          -webkit-user-drag: none;
+          mix-blend-mode: screen;
+          animation: logoPulse 3s ease-in-out 1.2s infinite;
+        }
+
+        /* شعار العنوان — صورة XDreemB52 الذهبية */
+        .hero__title-img {
+          width: clamp(160px,28vw,380px);
+          height: auto;
+          display: block;
+          user-select: none;
+          -webkit-user-drag: none;
+          /* إزالة الخلفية الداكنة بـ screen */
+          mix-blend-mode: screen;
+          animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
+          filter: drop-shadow(0 2px 8px rgba(255,180,0,.5));
+        }
+
+        /* سطر فرعي */
+        .hero__sub {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          animation: slideDown .65s cubic-bezier(.22,1,.36,1) .34s both;
+        }
+        .hero__sub-text {
+          font-size: clamp(.76rem,1.8vw,1rem);
+          font-weight: 700;
+          color: #4a0008;
+          white-space: nowrap;
+        }
+
+        /* خط أحمر فاصل أسفل الهيرو */
+        .hero__divider {
+          position: absolute;
+          bottom: 0; left: 0; right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, transparent 0%, #CC2200 20%, #FF4400 50%, #CC2200 80%, transparent 100%);
+          box-shadow: 0 0 12px rgba(255,60,0,.7), 0 0 24px rgba(255,60,0,.35);
+          z-index: 6;
         }
 
         /* ════════════════════════════════
@@ -371,16 +365,6 @@ export default function LandingPage() {
         .card__hint { color: rgba(255,180,100,.42); font-size: .67rem; font-weight: 700; letter-spacing: .2px; }
         .rgb { animation: rgbName 3s ease-in-out infinite; }
 
-        /* خط أحمر فاصل أسفل الهيرو */
-        .hero__divider {
-          position: absolute;
-          bottom: 0; left: 0; right: 0;
-          height: 4px;
-          background: linear-gradient(90deg, transparent 0%, #CC2200 20%, #FF4400 50%, #CC2200 80%, transparent 100%);
-          box-shadow: 0 0 12px rgba(255,60,0,.7), 0 0 24px rgba(255,60,0,.35);
-          z-index: 6;
-        }
-
         /* modal */
         .modal { position:fixed; inset:0; background:rgba(0,0,0,.94); display:flex; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(5px); animation:fadeIn .25s ease; }
         .modal__inner { position:relative; max-width:90vw; max-height:90vh; display:flex; align-items:center; justify-content:center; }
@@ -393,14 +377,16 @@ export default function LandingPage() {
 
         {/* ═══ HERO ═══ */}
         <div className="hero">
-          <div className="hero__bg" />
 
-          {/* شعاعات الضوء */}
+          {/* خلفية الصورة الحقيقية */}
+          <img className="hero__bg-img" src={heroBg} alt="" aria-hidden="true" />
+
+          {/* شعاعات ضوء خفيفة */}
           <div className="hero__rays">
-            {Array.from({ length: 9 }).map((_, i) => <div key={i} className="ray" />)}
+            {Array.from({ length: 7 }).map((_, i) => <div key={i} className="ray" />)}
           </div>
 
-          {/* اللوحات الجانبية — مربعان على كل جانب */}
+          {/* لوحات شفافة — يسار: 2، يمين: 1 */}
           <div className="hero__panels">
             <div className="panels__left">
               <div className="panel" />
@@ -408,15 +394,14 @@ export default function LandingPage() {
             </div>
             <div className="panels__right">
               <div className="panel" />
-              <div className="panel" />
             </div>
           </div>
 
-          {/* اللهب */}
-          <img className="hero__flame hero__flame--left"  src={flameLeft}  alt="" />
-          <img className="hero__flame hero__flame--right" src={flameRight} alt="" />
+          {/* اللهب — نفس الصورة، اليمين مرآة */}
+          <img className="hero__flame hero__flame--left"  src={flameImg} alt="" aria-hidden="true" />
+          <img className="hero__flame hero__flame--right" src={flameImg} alt="" aria-hidden="true" />
 
-          {/* شريط التنقل */}
+          {/* شريط تنقل */}
           <nav className="nav">
             <div className="nav__icons">
               <a className="nav__icon" href="https://discord.gg/ArYbJ9McA" target="_blank" rel="noopener noreferrer" aria-label="ديسكورد">
@@ -436,23 +421,29 @@ export default function LandingPage() {
             </a>
           </nav>
 
-          {/* الشعار + الاسم + العنوان الفرعي */}
+          {/* الشعار + العنوان الصورة + العنوان الفرعي */}
           <div className="hero__content">
-            {/* هالة + شعار */}
-            <div className="hero__logo-halo">
-              <div className="hero__logo-wrap">
-                <img className="hero__logo" src={bombLogo} alt="XDreemB52 Logo" />
-              </div>
+            {/* شعار القنبلة — screen blend يزيل الخلفية السوداء */}
+            <div className="hero__logo-wrap">
+              <img className="hero__logo" src={bombLogo} alt="XDreemB52 Logo" />
             </div>
-            <h1 className="hero__name">XDreemB52</h1>
+
+            {/* عنوان XDreemB52 كصورة ذهبية */}
+            <img
+              className="hero__title-img"
+              src={titleImg}
+              alt="XDreemB52"
+            />
+
+            {/* سطر فرعي */}
             <div className="hero__sub">
               <Lightning />
-              <span className="hero__sub-text">سلسلة الألعاب المتفجرة · عن سيكون البطل القادم؟</span>
+              <span className="hero__sub-text">ساحة الأبطال منتظرة.. من سيكون البطل القادم؟</span>
               <Lightning flip />
             </div>
           </div>
 
-          {/* خط أحمر فاصل أسفل الهيرو */}
+          {/* خط أحمر فاصل */}
           <div className="hero__divider" />
         </div>
 
