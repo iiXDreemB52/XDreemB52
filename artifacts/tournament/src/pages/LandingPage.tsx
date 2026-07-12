@@ -1,7 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
 
 // الأصول
-import heroBg    from "@assets/image_1783877889862.png";
 import flameLeft  from "@assets/flame-left.png";
 import flameRight from "@assets/flame-right.png";
 import bombLogo  from "@assets/image-0_1783877865511.png";
@@ -90,20 +89,46 @@ export default function LandingPage() {
           justify-content: center;
           overflow: hidden;
           flex-shrink: 0;
+          /* خلفية متدرجة نارية (ذهبي أعلى → برتقالي → أحمر) بدل الصورة الفوتوغرافية */
+          background: linear-gradient(180deg,
+            #FFD84A 0%,
+            #FFB020 28%,
+            #FF7A00 55%,
+            #E23B00 80%,
+            #B31C00 100%);
         }
 
-        /* خلفية الصورة الحقيقية */
-        .hero__bg-img {
+        /* أشرطة الضوء القطرية الخفيفة فوق التدرج (تحاكي خطوط الإضاءة بالصورة المرجعية) */
+        .hero__bg-stripes {
           position: absolute;
           inset: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-          object-position: center;
           z-index: 0;
           pointer-events: none;
-          user-select: none;
+          background: repeating-linear-gradient(
+            115deg,
+            rgba(255,255,255,.10) 0px,
+            rgba(255,255,255,.10) 10px,
+            transparent 10px,
+            transparent 46px
+          );
+          mix-blend-mode: overlay;
         }
+
+        /* المربعات الزجاجية الشفافة على الجانبين (زي الصورة المرجعية) */
+        .hero__window {
+          position: absolute;
+          top: 30%;
+          height: 46%;
+          width: clamp(60px, 8vw, 110px);
+          background: linear-gradient(180deg, rgba(255,224,140,.30), rgba(255,150,20,.12));
+          border: 1px solid rgba(255,255,255,.18);
+          z-index: 1;
+          pointer-events: none;
+        }
+        .hero__window--l1 { left: 6%; }
+        .hero__window--l2 { left: 17%; }
+        .hero__window--r1 { right: 6%; }
+        .hero__window--r2 { right: 17%; }
 
         /* شعاعات الضوء خفيفة فوق الصورة */
         .hero__rays {
@@ -398,13 +423,19 @@ export default function LandingPage() {
         {/* ═══ HERO ═══ */}
         <div className="hero">
 
-          {/* خلفية الصورة الحقيقية */}
-          <img className="hero__bg-img" src={heroBg} alt="" aria-hidden="true" />
+          {/* خلفية متدرجة نارية + أشرطة ضوء */}
+          <div className="hero__bg-stripes" />
 
           {/* شعاعات ضوء خفيفة */}
           <div className="hero__rays">
             {Array.from({ length: 7 }).map((_, i) => <div key={i} className="ray" />)}
           </div>
+
+          {/* المربعات الزجاجية على الجانبين */}
+          <div className="hero__window hero__window--l1" />
+          <div className="hero__window hero__window--l2" />
+          <div className="hero__window hero__window--r1" />
+          <div className="hero__window hero__window--r2" />
 
           {/* اللهب — flame-left يسار، flame-right يمين مقلوب */}
           <img className="hero__flame hero__flame--left"  src={flameLeft}  alt="" aria-hidden="true" />
