@@ -9,16 +9,17 @@ import { type TournamentRecord } from "@/lib/types";
 function Lightning({ flip = false }: { flip?: boolean }) {
   return (
     <svg
-      width="44" height="16"
-      viewBox="0 0 44 16"
+      width="56" height="18"
+      viewBox="0 0 56 18"
       style={{ flexShrink: 0, transform: flip ? "scaleX(-1)" : "none" }}
     >
-      <line x1="0"  y1="8" x2="10" y2="8" stroke="#8B2200" strokeWidth="1.8" strokeLinecap="round"/>
-      <line x1="12" y1="8" x2="44" y2="8" stroke="#8B2200" strokeWidth="1.8" strokeLinecap="round"/>
-      {/* رأس السهم */}
-      <path d="M10 3 L16 8 L10 13 Z" fill="#8B2200"/>
-      {/* خط أسفل */}
-      <line x1="0" y1="11" x2="44" y2="11" stroke="rgba(180,60,0,.3)" strokeWidth="1" strokeLinecap="round"/>
+      {/* خط علوي */}
+      <line x1="0" y1="7"  x2="52" y2="7"  stroke="#7a1800" strokeWidth="1.5" strokeLinecap="round"/>
+      {/* خط سفلي */}
+      <line x1="0" y1="11" x2="52" y2="11" stroke="#7a1800" strokeWidth="1.5" strokeLinecap="round"/>
+      {/* سهم برق */}
+      <path d="M36 2 L44 9 L36 16 L39 9 Z" fill="#CC3300"/>
+      <path d="M28 4 L36 9 L28 14 L31 9 Z" fill="#FF5500" opacity=".7"/>
     </svg>
   );
 }
@@ -167,14 +168,33 @@ export default function LandingPage() {
           animation: fadeIn .5s ease both;
         }
 
+        /* هالة/توهج خلف الشعار */
+        .hero__logo-halo {
+          position: relative;
+          flex-shrink: 0;
+          animation: scaleIn .85s cubic-bezier(.22,1,.36,1) .1s both;
+        }
+        .hero__logo-halo::before {
+          content: "";
+          position: absolute;
+          inset: 10% 5% auto;
+          bottom: 10%;
+          border-radius: 50%;
+          background: radial-gradient(ellipse, rgba(0,0,0,.55) 30%, transparent 72%);
+          z-index: 0;
+          width: 92%;
+          height: 92%;
+          left: 4%;
+          top: 18%;
+        }
         /* شعار القنبلة — نقص 28% من الأسفل لقطع نص الصورة */
         .hero__logo-wrap {
+          position: relative;
+          z-index: 1;
           width: clamp(110px,17vw,200px);
           overflow: hidden;
-          /* نُظهر فقط 72% العلوية (الجزء الذي فيه الرسم فقط) */
           height: calc(clamp(110px,17vw,200px) * 0.72);
-          animation: scaleIn .85s cubic-bezier(.22,1,.36,1) .1s both, logoPulse 3s ease-in-out 1.2s infinite;
-          flex-shrink: 0;
+          animation: logoPulse 3s ease-in-out 1.2s infinite;
         }
         .hero__logo {
           width: 100%;
@@ -182,7 +202,6 @@ export default function LandingPage() {
           display: block;
           user-select: none;
           -webkit-user-drag: none;
-          /* اضبط mix-blend-mode لدمج الخلفية البرتقالية مع الهيرو */
           mix-blend-mode: multiply;
         }
 
@@ -349,6 +368,16 @@ export default function LandingPage() {
         .card__hint { color: rgba(255,180,100,.42); font-size: .67rem; font-weight: 700; letter-spacing: .2px; }
         .rgb { animation: rgbName 3s ease-in-out infinite; }
 
+        /* خط أحمر فاصل أسفل الهيرو */
+        .hero__divider {
+          position: absolute;
+          bottom: 0; left: 0; right: 0;
+          height: 4px;
+          background: linear-gradient(90deg, transparent 0%, #CC2200 20%, #FF4400 50%, #CC2200 80%, transparent 100%);
+          box-shadow: 0 0 12px rgba(255,60,0,.7), 0 0 24px rgba(255,60,0,.35);
+          z-index: 6;
+        }
+
         /* modal */
         .modal { position:fixed; inset:0; background:rgba(0,0,0,.94); display:flex; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(5px); animation:fadeIn .25s ease; }
         .modal__inner { position:relative; max-width:90vw; max-height:90vh; display:flex; align-items:center; justify-content:center; }
@@ -368,13 +397,14 @@ export default function LandingPage() {
             {Array.from({ length: 9 }).map((_, i) => <div key={i} className="ray" />)}
           </div>
 
-          {/* اللوحات الجانبية */}
+          {/* اللوحات الجانبية — مربعان على كل جانب */}
           <div className="hero__panels">
             <div className="panels__left">
               <div className="panel" />
               <div className="panel" />
             </div>
             <div className="panels__right">
+              <div className="panel" />
               <div className="panel" />
             </div>
           </div>
@@ -405,16 +435,22 @@ export default function LandingPage() {
 
           {/* الشعار + الاسم + العنوان الفرعي */}
           <div className="hero__content">
-            <div className="hero__logo-wrap">
-              <img className="hero__logo" src={bombLogo} alt="XDreemB52 Logo" />
+            {/* هالة + شعار */}
+            <div className="hero__logo-halo">
+              <div className="hero__logo-wrap">
+                <img className="hero__logo" src={bombLogo} alt="XDreemB52 Logo" />
+              </div>
             </div>
             <h1 className="hero__name">XDreemB52</h1>
             <div className="hero__sub">
               <Lightning />
-              <span className="hero__sub-text">ساحة الأبطال منتظرة.. من سيكون البطل القادم؟</span>
+              <span className="hero__sub-text">سلسلة الألعاب المتفجرة · عن سيكون البطل القادم؟</span>
               <Lightning flip />
             </div>
           </div>
+
+          {/* خط أحمر فاصل أسفل الهيرو */}
+          <div className="hero__divider" />
         </div>
 
         {/* ═══ قسم الكروت ═══ */}
