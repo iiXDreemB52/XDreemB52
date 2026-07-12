@@ -142,26 +142,42 @@ export default function LandingPage() {
           border-radius: 5px;
         }
 
+        /* ظل داكن على أطراف الهيرو يجعل اللهب بارزاً */
+        .hero::before, .hero::after {
+          content: "";
+          position: absolute;
+          top: 0; bottom: 0;
+          width: clamp(90px,16vw,210px);
+          z-index: 2;
+          pointer-events: none;
+        }
+        .hero::before {
+          left: 0;
+          background: linear-gradient(90deg, rgba(120,20,0,.55) 0%, transparent 100%);
+        }
+        .hero::after {
+          right: 0;
+          background: linear-gradient(270deg, rgba(120,20,0,.55) 0%, transparent 100%);
+        }
+
         /* اللهب — كلا الجانبين نفس الصورة */
         .hero__flame {
           position: absolute;
           bottom: 0;
-          height: 100%;
-          width: clamp(80px,13vw,170px);
+          height: 105%;
+          width: clamp(100px,16vw,210px);
           object-fit: cover;
-          object-position: left center;
           z-index: 3;
           pointer-events: none;
           animation: flameIn .9s ease .2s both;
+          filter: saturate(1.25) contrast(1.1);
         }
         .hero__flame--left  {
           left: 0;
-          --fx: 1;
           object-position: left center;
         }
         .hero__flame--right {
           right: 0;
-          --fx: -1;
           transform: scaleX(-1);
           object-position: left center;
         }
