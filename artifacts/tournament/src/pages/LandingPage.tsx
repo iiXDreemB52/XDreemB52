@@ -227,15 +227,13 @@ export default function LandingPage() {
           font-weight: 900;
           letter-spacing: .5px;
           font-family: Cairo, Tajawal, sans-serif;
-          background: linear-gradient(180deg, #FFF3C4 0%, #FFC63A 35%, #FF9900 70%, #E86A00 100%);
+          background: linear-gradient(180deg, #FFE066 0%, #FFC63A 40%, #FFA500 100%);
           -webkit-background-clip: text;
           background-clip: text;
           color: transparent;
-          -webkit-text-stroke: 1.5px #7a1800;
-          text-shadow:
-            0 2px 0 #7a1800,
-            0 4px 10px rgba(0,0,0,.45),
-            0 0 24px rgba(255,150,0,.55);
+          -webkit-text-stroke: 2px #5a1200;
+          paint-order: stroke fill;
+          text-shadow: 0 3px 0 #5a1200;
           animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
           direction: ltr;
           line-height: 1.1;
@@ -251,13 +249,8 @@ export default function LandingPage() {
         .hero__sub-text {
           font-size: clamp(.8rem,1.9vw,1.05rem);
           font-weight: 800;
-          color: #fff8ec;
+          color: #5a1200;
           white-space: nowrap;
-          text-shadow:
-            0 1px 0 #ffd27a,
-            0 -1px 0 rgba(255,255,255,.6),
-            0 2px 3px rgba(74,0,8,.55),
-            0 0 10px rgba(255,150,0,.4);
           letter-spacing: .2px;
         }
 
