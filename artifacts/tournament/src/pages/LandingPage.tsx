@@ -114,21 +114,21 @@ export default function LandingPage() {
           mix-blend-mode: overlay;
         }
 
-        /* المربعات الزجاجية الشفافة على الجانبين (زي الصورة المرجعية) */
+        /* المربعات الزجاجية الشفافة على الجانبين — واحد طويل من الأعلى وواحد أقصر ومرتفع لأسفل، زي الصورة المرجعية */
         .hero__window {
           position: absolute;
-          top: 30%;
-          height: 46%;
           width: clamp(60px, 8vw, 110px);
           background: linear-gradient(180deg, rgba(255,224,140,.30), rgba(255,150,20,.12));
           border: 1px solid rgba(255,255,255,.18);
           z-index: 1;
           pointer-events: none;
         }
-        .hero__window--l1 { left: 6%; }
-        .hero__window--l2 { left: 17%; }
-        .hero__window--r1 { right: 6%; }
-        .hero__window--r2 { right: 17%; }
+        /* الصندوق الخارجي (الأبعد عن الشعار) — طويل يبدأ من أعلى البانر */
+        .hero__window--l1 { left: 5%;  top: 0;   height: 62%; }
+        .hero__window--r1 { right: 5%; top: 0;   height: 62%; }
+        /* الصندوق الداخلي (الأقرب للنار/الشعار) — أقصر ومنزّل لتحت */
+        .hero__window--l2 { left: 17%; top: 30%; height: 40%; }
+        .hero__window--r2 { right: 17%; top: 30%; height: 40%; }
 
         /* شعاعات الضوء خفيفة فوق الصورة */
         .hero__rays {
