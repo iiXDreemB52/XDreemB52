@@ -4,6 +4,171 @@ import flameRight from "@assets/flame-right.png";
 import { getRecords, useSSE } from "@/lib/api";
 import { type TournamentRecord } from "@/lib/types";
 
+/* ─── شعار القنبلة (SVG دقيق) ─── */
+function BombLogo() {
+  return (
+    <svg
+      viewBox="0 0 220 260"
+      xmlns="http://www.w3.org/2000/svg"
+      style={{ width: "clamp(120px,18vw,200px)", height: "auto", filter: "drop-shadow(0 0 24px rgba(255,130,0,.8))" }}
+    >
+      <defs>
+        {/* خلفية قطرة النار */}
+        <radialGradient id="flameDropGrad" cx="48%" cy="62%" r="50%">
+          <stop offset="0%" stopColor="#FFD000" />
+          <stop offset="55%" stopColor="#FF8C00" />
+          <stop offset="100%" stopColor="#CC4400" />
+        </radialGradient>
+
+        {/* وجه القنبلة */}
+        <radialGradient id="faceGrad" cx="40%" cy="38%" r="60%">
+          <stop offset="0%" stopColor="#2a1a30" />
+          <stop offset="60%" stopColor="#160b1e" />
+          <stop offset="100%" stopColor="#0a0612" />
+        </radialGradient>
+
+        {/* حلقة بنفسجية حول الوجه */}
+        <radialGradient id="ringGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="78%" stopColor="transparent" />
+          <stop offset="85%" stopColor="#7a2892" />
+          <stop offset="100%" stopColor="#4a0e60" />
+        </radialGradient>
+
+        {/* توهج العين */}
+        <radialGradient id="eyeGlow" cx="35%" cy="30%" r="65%">
+          <stop offset="0%" stopColor="#ff6666" />
+          <stop offset="50%" stopColor="#cc0000" />
+          <stop offset="100%" stopColor="#880000" />
+        </radialGradient>
+
+        {/* ظل تحت الشعار */}
+        <radialGradient id="shadowGrad" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stopColor="rgba(0,0,0,.35)" />
+          <stop offset="100%" stopColor="rgba(0,0,0,0)" />
+        </radialGradient>
+
+        <filter id="eyeBlur">
+          <feGaussianBlur in="SourceGraphic" stdDeviation="1.2" />
+        </filter>
+      </defs>
+
+      {/* ظل ناعم تحت الشعار */}
+      <ellipse cx="110" cy="250" rx="70" ry="12" fill="url(#shadowGrad)" />
+
+      {/* ─── شكل قطرة النار ─── */}
+      {/* توهج خارجي */}
+      <path
+        d="M110 14 C110 14, 172 78, 172 148 C172 195 145 228 110 228 C75 228 48 195 48 148 C48 78 110 14 110 14 Z"
+        fill="rgba(255,140,0,.25)"
+        transform="scale(1.08) translate(-8,-8)"
+      />
+      {/* القطرة الرئيسية */}
+      <path
+        d="M110 18 C110 18, 168 78, 168 146 C168 191 142 224 110 224 C78 224 52 191 52 146 C52 78 110 18 110 18 Z"
+        fill="url(#flameDropGrad)"
+      />
+      {/* حافة لامعة للقطرة */}
+      <path
+        d="M110 18 C110 18, 168 78, 168 146 C168 191 142 224 110 224 C78 224 52 191 52 146 C52 78 110 18 110 18 Z"
+        fill="none"
+        stroke="rgba(255,220,80,.55)"
+        strokeWidth="2.5"
+      />
+      {/* لمعة علوية داخل القطرة */}
+      <path
+        d="M98 32 C98 32, 82 68, 80 90 C79 102 86 108 92 100 C98 92 104 60 110 38 Z"
+        fill="rgba(255,255,255,.18)"
+      />
+
+      {/* ─── الفتيلة / فيوز ─── */}
+      {/* حبل الفتيلة */}
+      <path
+        d="M148 82 Q162 62 156 42 Q150 28 162 18"
+        stroke="#7a5520"
+        strokeWidth="5"
+        fill="none"
+        strokeLinecap="round"
+      />
+      {/* خطوط الفتيلة (إيهام الحبل) */}
+      <path
+        d="M148 82 Q162 62 156 42 Q150 28 162 18"
+        stroke="rgba(255,200,80,.35)"
+        strokeWidth="2"
+        fill="none"
+        strokeLinecap="round"
+        strokeDasharray="4 5"
+      />
+      {/* غطاء الفتيلة المعدني (مستطيل أحمر) */}
+      <rect x="155" y="8" width="18" height="26" rx="5" ry="5" fill="#992200" transform="rotate(18,164,21)" />
+      <rect x="157" y="10" width="14" height="10" rx="2" fill="#CC3300" transform="rotate(18,164,15)" />
+      {/* خطوط على الغطاء */}
+      <line x1="158" y1="20" x2="171" y2="17" stroke="rgba(255,100,0,.5)" strokeWidth="1.5" />
+      <line x1="158" y1="24" x2="171" y2="21" stroke="rgba(255,100,0,.5)" strokeWidth="1.5" />
+      {/* شرارة صغيرة */}
+      <circle cx="162" cy="8" r="4.5" fill="#FFD700">
+        <animate attributeName="r" values="3.5;6;3.5" dur="0.7s" repeatCount="indefinite" />
+        <animate attributeName="opacity" values="1;0.5;1" dur="0.7s" repeatCount="indefinite" />
+      </circle>
+      <circle cx="162" cy="8" r="2.5" fill="white">
+        <animate attributeName="r" values="2;3.5;2" dur="0.7s" repeatCount="indefinite" />
+      </circle>
+
+      {/* ─── وجه القنبلة ─── */}
+      {/* توهج الحلقة البنفسجية */}
+      <circle cx="110" cy="148" r="62" fill="rgba(140,40,180,.18)" />
+      {/* الحلقة البنفسجية */}
+      <circle cx="110" cy="148" r="55" fill="none" stroke="#7a2892" strokeWidth="7" />
+      {/* داخل الحلقة - تدرج داكن */}
+      <circle cx="110" cy="148" r="51.5" fill="url(#faceGrad)" />
+      {/* لمعة داخل الوجه */}
+      <ellipse cx="92" cy="128" rx="16" ry="10" fill="rgba(255,255,255,.07)" transform="rotate(-25,92,128)" />
+
+      {/* ─── الحاجبان (غاضبان) ─── */}
+      {/* حاجب أيسر - ينحدر بشدة للداخل */}
+      <line x1="76" y1="120" x2="98" y2="132" stroke="white" strokeWidth="6" strokeLinecap="round" />
+      {/* حاجب أيمن */}
+      <line x1="144" y1="120" x2="122" y2="132" stroke="white" strokeWidth="6" strokeLinecap="round" />
+
+      {/* ─── العينان ─── */}
+      {/* توهج خارجي العين اليسرى */}
+      <circle cx="92" cy="148" r="16" fill="rgba(200,0,0,.3)" filter="url(#eyeBlur)" />
+      {/* العين اليسرى */}
+      <circle cx="92" cy="148" r="12.5" fill="url(#eyeGlow)" />
+      <circle cx="92" cy="148" r="12.5" fill="none" stroke="rgba(255,80,80,.6)" strokeWidth="1.5" />
+      {/* حدقة العين اليسرى */}
+      <circle cx="92" cy="149" r="6" fill="#400000" />
+      {/* لمعة العين اليسرى */}
+      <circle cx="87" cy="143" r="3.5" fill="rgba(255,255,255,.9)" />
+      <circle cx="85" cy="141" r="1.5" fill="white" />
+
+      {/* توهج خارجي العين اليمنى */}
+      <circle cx="128" cy="148" r="16" fill="rgba(200,0,0,.3)" filter="url(#eyeBlur)" />
+      {/* العين اليمنى */}
+      <circle cx="128" cy="148" r="12.5" fill="url(#eyeGlow)" />
+      <circle cx="128" cy="148" r="12.5" fill="none" stroke="rgba(255,80,80,.6)" strokeWidth="1.5" />
+      {/* حدقة العين اليمنى */}
+      <circle cx="128" cy="149" r="6" fill="#400000" />
+      {/* لمعة العين اليمنى */}
+      <circle cx="123" cy="143" r="3.5" fill="rgba(255,255,255,.9)" />
+      <circle cx="121" cy="141" r="1.5" fill="white" />
+
+      {/* ─── علامة الأنف / تعبير الغضب ─── */}
+      <path d="M104 164 L110 158 L116 164" fill="none" stroke="rgba(255,255,255,.7)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+/* ─── ديكورات البرق على جانبي العنوان الفرعي ─── */
+function LightningDeco({ flip = false }: { flip?: boolean }) {
+  return (
+    <svg width="40" height="14" viewBox="0 0 40 14" style={{ transform: flip ? "scaleX(-1)" : "none" }}>
+      <path d="M0 7 L12 7 M14 7 L20 1 L22 7 L28 7 M30 7 L40 7" stroke="#CC4400" strokeWidth="2" strokeLinecap="round" />
+      <path d="M20 1 L22 7 L18 7 Z" fill="#CC4400" />
+      <line x1="0" y1="10" x2="40" y2="10" stroke="rgba(200,80,0,.4)" strokeWidth="1" />
+    </svg>
+  );
+}
+
 export default function LandingPage() {
   const [records, setRecords] = useState<TournamentRecord[]>([]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
@@ -24,7 +189,6 @@ export default function LandingPage() {
         winner: r.winnerName || "",
         image: r.image || "",
         image2: r.image2 || "",
-        empty: false,
       }));
   }, [records]);
 
@@ -34,379 +198,321 @@ export default function LandingPage() {
         *{box-sizing:border-box;margin:0;padding:0}
 
         @keyframes fadeIn{from{opacity:0}to{opacity:1}}
-        @keyframes enterDown{from{opacity:0;transform:translateY(-22px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes enterUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
-        @keyframes enterScale{0%{opacity:0;transform:scale(.6) rotate(-6deg)}60%{transform:scale(1.07) rotate(2deg)}100%{opacity:1;transform:scale(1) rotate(0)}}
-        @keyframes enterCard{from{opacity:0;transform:translateY(32px) scale(.93)}to{opacity:1;transform:translateY(0) scale(1)}}
-        @keyframes flameIn{from{opacity:0;transform:scaleY(.7) translateY(30px)}to{opacity:1;transform:scaleY(1) translateY(0)}}
-        @keyframes glowPulse{0%,100%{filter:drop-shadow(0 0 18px rgba(255,140,0,.7))}50%{filter:drop-shadow(0 0 36px rgba(255,200,0,.95))}}
-        @keyframes fuseFlicker{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.6;transform:scale(1.25)}}
-        @keyframes raySlide{from{opacity:0;transform:translateX(-60px) skewX(-18deg)}to{opacity:.18;transform:translateX(0) skewX(-18deg)}}
-        @keyframes sheenSweep{0%{transform:translateX(-120%) skewX(-20deg)}100%{transform:translateX(220%) skewX(-20deg)}}
-        @keyframes trophyFloat{0%,100%{transform:translateY(0) rotate(-2deg)}50%{transform:translateY(-5px) rotate(2deg)}}
-        @keyframes rgbName{
-          0%{color:#ff4500;text-shadow:0 0 10px rgba(255,69,0,.8)}
-          33%{color:#ffd700;text-shadow:0 0 10px rgba(255,215,0,.8)}
-          66%{color:#ff8c00;text-shadow:0 0 10px rgba(255,140,0,.8)}
-          100%{color:#ff4500;text-shadow:0 0 10px rgba(255,69,0,.8)}
-        }
+        @keyframes slideDown{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes slideUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes scaleIn{0%{opacity:0;transform:scale(.55)}70%{transform:scale(1.04)}100%{opacity:1;transform:scale(1)}}
+        @keyframes cardIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+        @keyframes flameEnter{from{opacity:0;transform:scaleY(.6) translateY(40px)}to{opacity:1;transform:scaleY(1) translateY(0)}}
+        @keyframes rgbName{0%{color:#FF4500}33%{color:#FFD700}66%{color:#FF8C00}100%{color:#FF4500}}
+        @keyframes trophyBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}
+        @keyframes sheen{0%{transform:translateX(-130%) skewX(-22deg)}100%{transform:translateX(230%) skewX(-22deg)}}
+        @keyframes rayPop{from{opacity:0;transform:translateX(-30px) skewX(-18deg)}to{opacity:1;transform:skewX(-18deg)}}
 
         .lp-root{
           min-height:100vh;width:100%;
-          font-family:Cairo,Tajawal,sans-serif;
+          font-family:Cairo,Tajawal,'Noto Sans Arabic',sans-serif;
           display:flex;flex-direction:column;
           overflow-x:hidden;
-          background:#2a0008;
+          background:#1a0006;
+          direction:rtl;
         }
 
-        /* ===== HERO ===== */
-        .lp-hero{
-          position:relative;
-          width:100%;
-          padding-bottom:38%;
-          min-height:340px;
-          background:linear-gradient(160deg,#FFD700 0%,#FFA500 30%,#FF6A00 65%,#E63200 100%);
-          overflow:hidden;
-          flex-shrink:0;
+        /* ═══ HERO ═══ */
+        .hero{
+          position:relative;width:100%;
+          min-height:min(52vw,480px);
+          display:flex;align-items:center;justify-content:center;
+          overflow:hidden;flex-shrink:0;
+        }
+
+        /* تدرج الخلفية — أصفر للأعلى، برتقالي للأسفل */
+        .hero-bg{
+          position:absolute;inset:0;
+          background:linear-gradient(170deg,#FFD700 0%,#FFC200 20%,#FF8C00 55%,#DD4A00 85%,#C23000 100%);
         }
 
         /* شعاعات الضوء المائلة */
-        .lp-rays{
-          position:absolute;inset:0;pointer-events:none;z-index:1;
-          overflow:hidden;
-        }
-        .lp-ray{
-          position:absolute;top:-20%;
-          width:7%;height:180%;
-          background:rgba(255,255,255,.22);
+        .rays{position:absolute;inset:0;overflow:hidden;pointer-events:none}
+        .ray{
+          position:absolute;top:-10%;height:130%;
+          background:rgba(255,255,255,.14);
           transform:skewX(-18deg);
-          animation:raySlide .9s ease-out both;
+          transform-origin:top center;
+          animation:rayPop .7s ease-out both;
         }
-        .lp-ray:nth-child(1){left:8%;animation-delay:.05s}
-        .lp-ray:nth-child(2){left:16%;width:3%;background:rgba(255,255,255,.13);animation-delay:.1s}
-        .lp-ray:nth-child(3){left:26%;width:9%;animation-delay:.15s}
-        .lp-ray:nth-child(4){left:40%;width:4%;background:rgba(255,255,255,.12);animation-delay:.2s}
-        .lp-ray:nth-child(5){left:56%;width:8%;animation-delay:.12s}
-        .lp-ray:nth-child(6){left:68%;width:3%;background:rgba(255,255,255,.13);animation-delay:.18s}
-        .lp-ray:nth-child(7){left:78%;width:10%;animation-delay:.08s}
-        .lp-ray:nth-child(8){left:90%;width:5%;background:rgba(255,255,255,.1);animation-delay:.22s}
+        .ray:nth-child(1){left:6%;width:5%;animation-delay:.05s}
+        .ray:nth-child(2){left:14%;width:2.5%;background:rgba(255,255,255,.08);animation-delay:.08s}
+        .ray:nth-child(3){left:22%;width:7%;animation-delay:.11s}
+        .ray:nth-child(4){left:34%;width:3%;background:rgba(255,255,255,.1);animation-delay:.14s}
+        .ray:nth-child(5){left:52%;width:6%;animation-delay:.09s}
+        .ray:nth-child(6){left:64%;width:2.5%;background:rgba(255,255,255,.09);animation-delay:.13s}
+        .ray:nth-child(7){left:74%;width:7%;animation-delay:.07s}
+        .ray:nth-child(8){left:87%;width:4%;background:rgba(255,255,255,.07);animation-delay:.17s}
+        .ray:nth-child(9){left:93%;width:8%;animation-delay:.04s}
 
-        /* لوحتان جانبيتان */
-        .lp-panel{
-          position:absolute;top:8%;bottom:10%;
-          width:16%;
-          background:rgba(255,120,0,.22);
-          border:1.5px solid rgba(255,200,80,.25);
-          z-index:2;
+        /* لوحات جانبية */
+        .panels{position:absolute;inset:0;pointer-events:none;display:flex;align-items:stretch}
+        .panels-left,.panels-right{display:flex;gap:8px;align-items:stretch;padding:10px 12px}
+        .panels-left{flex-direction:row}
+        .panels-right{flex-direction:row-reverse}
+        .panel-group{display:flex;gap:8px}
+        .panel{
+          width:clamp(30px,6vw,68px);
+          background:rgba(255,165,0,.2);
+          border:1.5px solid rgba(255,210,80,.22);
           border-radius:4px;
         }
-        .lp-panel-l{left:2%}
-        .lp-panel-r{right:2%}
-        .lp-panel::before{
-          content:"";position:absolute;inset:6px;
-          border:1px solid rgba(255,210,100,.15);border-radius:2px;
-        }
 
-        /* اللهب */
-        .lp-flame{
-          position:absolute;bottom:0;z-index:3;
-          width:22%;max-width:220px;
-          animation:flameIn .8s cubic-bezier(.22,1,.36,1) .4s both;
+        /* ─── اللهب على الجوانب ─── */
+        .flame{
+          position:absolute;bottom:0;z-index:4;
+          width:clamp(100px,16vw,200px);
           pointer-events:none;
+          animation:flameEnter .9s cubic-bezier(.22,1,.36,1) .35s both;
         }
-        .lp-flame-l{left:0;transform-origin:bottom left}
-        .lp-flame-r{right:0;transform-origin:bottom right}
+        .flame-left{left:0;transform-origin:bottom left}
+        .flame-right{right:0;transform-origin:bottom right}
 
-        /* محتوى الهيرو */
-        .lp-hero-content{
-          position:absolute;inset:0;z-index:4;
-          display:flex;flex-direction:column;align-items:center;justify-content:center;
-          gap:10px;padding:20px;
-        }
-
-        /* شعار القنبلة */
-        .lp-bomb-wrap{
-          animation:enterScale .9s cubic-bezier(.22,1,.36,1) .1s both;
-        }
-        .lp-bomb-svg{
-          width:clamp(90px,14vw,160px);height:auto;
-          animation:glowPulse 2.8s ease-in-out infinite;
-          filter:drop-shadow(0 0 22px rgba(255,120,0,.85));
+        /* ─── المحتوى المركزي ─── */
+        .hero-inner{
+          position:relative;z-index:5;
+          display:flex;flex-direction:column;align-items:center;
+          gap:clamp(6px,1.5vw,14px);
+          padding:24px 16px 32px;
+          animation:fadeIn .5s ease both;
         }
 
-        /* اسم الموقع */
-        .lp-sitename{
-          font-size:clamp(2rem,6vw,5rem);
+        .logo-wrap{animation:scaleIn .85s cubic-bezier(.22,1,.36,1) .1s both}
+
+        .site-name{
+          font-size:clamp(2.2rem,7vw,5.5rem);
           font-weight:900;
-          color:#3D0006;
-          letter-spacing:.5px;
-          text-shadow:0 2px 0 rgba(255,200,80,.5), 0 4px 12px rgba(0,0,0,.25);
-          animation:enterDown .7s cubic-bezier(.22,1,.36,1) .25s both;
+          color:#3a0008;
+          letter-spacing:1px;
+          text-shadow:
+            0 1px 0 rgba(255,210,80,.4),
+            0 3px 10px rgba(0,0,0,.2);
+          animation:slideDown .65s cubic-bezier(.22,1,.36,1) .25s both;
           line-height:1;
         }
 
-        /* السطر الفرعي */
-        .lp-subtitle{
-          font-size:clamp(.75rem,2vw,1.1rem);
+        .subtitle-row{
+          display:flex;align-items:center;gap:10px;
+          animation:slideDown .65s cubic-bezier(.22,1,.36,1) .36s both;
+        }
+        .subtitle-text{
+          font-size:clamp(.8rem,2vw,1.05rem);
           font-weight:700;
           color:#5a0010;
-          display:flex;align-items:center;gap:10px;
-          animation:enterDown .7s cubic-bezier(.22,1,.36,1) .35s both;
           white-space:nowrap;
         }
-        .lp-subtitle-deco{
-          display:inline-block;
-          width:clamp(16px,3vw,32px);height:2px;
-          background:linear-gradient(90deg,transparent,#7a1020);
-        }
-        .lp-subtitle-deco-r{background:linear-gradient(90deg,#7a1020,transparent)}
 
-        /* ===== شريط التنقل ===== */
-        .lp-nav{
+        /* ─── شريط تنقل ─── */
+        .nav{
           position:absolute;top:0;left:0;right:0;z-index:6;
           display:flex;align-items:center;justify-content:space-between;
-          padding:14px 20px;
-          animation:fadeIn .6s ease both;
+          padding:12px 18px;
+          animation:fadeIn .5s ease .05s both;
+          direction:ltr;
         }
-        .lp-nav-social{display:flex;align-items:center;gap:14px}
-        .lp-nav-icon{
-          width:34px;height:34px;border-radius:50%;
+        .nav-icons{display:flex;gap:12px}
+        .nav-icon{
+          width:36px;height:36px;border-radius:50%;
           display:flex;align-items:center;justify-content:center;
-          color:#3D0006;opacity:.85;
-          transition:opacity .2s, transform .2s;
+          color:#3a0008;opacity:.8;
+          transition:opacity .2s,transform .2s;
+          text-decoration:none;
         }
-        .lp-nav-icon:hover{opacity:1;transform:translateY(-2px)}
-        .lp-watch-btn{
+        .nav-icon:hover{opacity:1;transform:translateY(-2px)}
+        .watch-btn{
           display:flex;align-items:center;gap:8px;
-          padding:8px 20px;border-radius:999px;
-          background:linear-gradient(135deg,#FF6A00,#C43200);
+          padding:8px 22px;border-radius:999px;
+          background:linear-gradient(135deg,#FF6A00,#B83200);
           color:#fff;font-weight:800;font-size:.85rem;
-          text-decoration:none;border:1px solid rgba(255,255,255,.25);
-          box-shadow:0 4px 16px rgba(180,50,0,.4);
-          transition:transform .2s, box-shadow .2s, filter .2s;
+          text-decoration:none;
+          border:1px solid rgba(255,255,255,.22);
+          box-shadow:0 4px 16px rgba(160,40,0,.45);
+          transition:transform .2s,box-shadow .2s,filter .2s;
+          font-family:Cairo,sans-serif;
+          direction:rtl;
         }
-        .lp-watch-btn:hover{transform:translateY(-2px);filter:brightness(1.08);box-shadow:0 8px 22px rgba(180,50,0,.55)}
-        .lp-watch-dot{width:8px;height:8px;border-radius:50%;background:#fff;box-shadow:0 0 8px #fff;animation:fuseFlicker 1.4s ease-in-out infinite;flex-shrink:0}
+        .watch-btn:hover{transform:translateY(-2px);filter:brightness(1.1);box-shadow:0 8px 24px rgba(160,40,0,.6)}
+        .live-dot{
+          width:8px;height:8px;border-radius:50%;background:#fff;
+          box-shadow:0 0 8px #fff;flex-shrink:0;
+          animation:rayPop .3s ease-out .5s both;
+        }
 
-        /* ===== قسم الكروت ===== */
-        .lp-cards-section{
+        /* ─── قسم الكروت ─── */
+        .cards-section{
           flex:1;
-          background:linear-gradient(180deg,#2a0008 0%,#1a0005 100%);
+          background:linear-gradient(175deg,#3a0008 0%,#280005 30%,#1a0004 70%,#0f0002 100%);
           padding:40px 20px 60px;
           display:flex;flex-direction:column;align-items:center;
         }
-        .lp-cards-title{
-          font-size:clamp(1rem,2.5vw,1.4rem);
-          font-weight:900;color:#FF6A00;
-          letter-spacing:1px;
-          margin-bottom:28px;
-          text-shadow:0 0 12px rgba(255,106,0,.5);
-          animation:enterDown .7s cubic-bezier(.22,1,.36,1) .5s both;
-        }
-        .lp-grid{
-          width:100%;max-width:1400px;
-          display:flex;flex-wrap:wrap;justify-content:center;
-          gap:16px;
-        }
-        .lp-card-wrap{
-          flex:0 1 220px;opacity:0;
-          animation:enterCard .7s cubic-bezier(.22,1,.36,1) forwards;
-          animation-delay:calc(.6s + var(--card-i,0) * .09s);
-        }
-        @media(max-width:900px){.lp-card-wrap{flex-basis:calc(33.333% - 11px)}}
-        @media(max-width:520px){.lp-card-wrap{flex-basis:calc(50% - 8px)}}
 
-        .lp-card-head{
-          text-align:center;font-weight:900;
-          font-size:clamp(1rem,2.4vw,1.35rem);
-          color:#FFB347;letter-spacing:.3px;
-          margin-bottom:8px;
-          text-shadow:0 0 8px rgba(255,140,0,.4);
+        .cards-title{
+          font-size:clamp(1rem,2.5vw,1.35rem);
+          font-weight:900;color:#FF6A00;
+          letter-spacing:1px;margin-bottom:28px;
+          text-shadow:0 0 14px rgba(255,106,0,.5);
+          animation:slideUp .7s cubic-bezier(.22,1,.36,1) .5s both;
         }
-        .lp-card{
-          background:linear-gradient(180deg,rgba(60,5,15,.9),rgba(30,2,8,.95));
-          border:1px solid rgba(255,106,0,.25);
-          border-radius:18px;overflow:hidden;
-          box-shadow:0 12px 30px rgba(0,0,0,.5);
-          transition:transform .2s, box-shadow .2s, border-color .2s;
-          display:flex;flex-direction:column;min-height:270px;width:100%;
+
+        .cards-grid{
+          width:100%;max-width:1380px;
+          display:flex;flex-wrap:wrap;justify-content:center;gap:16px;
+        }
+
+        .card-wrap{
+          flex:0 1 210px;opacity:0;
+          animation:cardIn .7s cubic-bezier(.22,1,.36,1) forwards;
+          animation-delay:calc(.6s + var(--i,0)*.09s);
+        }
+        @media(max-width:880px){.card-wrap{flex-basis:calc(33.33% - 11px)}}
+        @media(max-width:520px){.card-wrap{flex-basis:calc(50% - 8px)}}
+
+        .card-label{
+          text-align:center;font-weight:900;
+          font-size:clamp(.9rem,2.2vw,1.2rem);
+          color:#FFB347;margin-bottom:7px;
+          text-shadow:0 0 8px rgba(255,140,0,.35);
+        }
+        .card{
+          background:linear-gradient(165deg,rgba(55,5,14,.95),rgba(25,2,6,.98));
+          border:1px solid rgba(255,100,0,.22);
+          border-radius:16px;overflow:hidden;
+          box-shadow:0 12px 32px rgba(0,0,0,.55);
+          min-height:260px;width:100%;
+          display:flex;flex-direction:column;
           position:relative;
           background-size:cover;background-position:center;
+          transition:transform .22s,box-shadow .22s,border-color .22s;
         }
-        .lp-card::before{
-          content:"";position:absolute;inset:0;pointer-events:none;z-index:0;
-          background:linear-gradient(180deg,rgba(40,3,10,.35) 0%,rgba(20,1,5,.55) 45%,rgba(10,0,3,.92) 100%);
+        .card:hover{transform:translateY(-5px) scale(1.06);box-shadow:0 22px 48px rgba(255,106,0,.2);border-color:rgba(255,140,0,.55);z-index:5}
+        .card::before{
+          content:"";position:absolute;inset:0;pointer-events:none;
+          background:linear-gradient(180deg,rgba(35,2,8,.3) 0%,rgba(15,0,4,.5) 45%,rgba(8,0,2,.92) 100%);
         }
-        .lp-card::after{
+        .card::after{
           content:"";position:absolute;inset:0;pointer-events:none;z-index:1;
-          background:linear-gradient(100deg,transparent 40%,rgba(255,140,0,.12) 50%,transparent 60%);
-          transform:translateX(-120%) skewX(-20deg);
-          animation:sheenSweep 1.1s ease-out forwards;
-          animation-delay:calc(1.05s + var(--card-i,0) * .09s);
+          background:linear-gradient(105deg,transparent 40%,rgba(255,140,0,.1) 50%,transparent 60%);
+          transform:translateX(-130%) skewX(-22deg);
+          animation:sheen 1s ease-out forwards;
+          animation-delay:calc(1s + var(--i,0)*.09s);
         }
-        .lp-card:hover{transform:translateY(-4px) scale(1.07);box-shadow:0 20px 44px rgba(255,106,0,.2);border-color:rgba(255,140,0,.6);z-index:5}
 
-        .lp-card-spotlight{
-          position:relative;z-index:2;
-          flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
-          gap:12px;padding:32px 14px 20px;
+        .card-body{
+          position:relative;z-index:2;flex:1;
+          display:flex;flex-direction:column;align-items:center;justify-content:center;
+          gap:10px;padding:28px 12px 18px;
         }
-        .lp-card-winner-group{display:flex;flex-direction:column;align-items:center;gap:2px}
-        .lp-card-hint{color:rgba(255,180,100,.5);font-size:.7rem;font-weight:700;letter-spacing:.3px}
-        .lp-card-winner{
-          text-align:center;font-weight:900;
-          font-size:clamp(.95rem,2.1vw,1.25rem);
-          display:flex;align-items:center;justify-content:center;
-        }
-        .lp-card-winner.is-empty{color:rgba(255,255,255,.3);font-weight:700;font-size:.75rem}
-        .lp-trophy{font-size:1.5rem;line-height:1;animation:trophyFloat 2.6s ease-in-out infinite}
-        .rgb-name{
-          font-weight:900;
-          animation:rgbName 3s ease-in-out infinite;
-        }
+        .trophy{font-size:1.6rem;animation:trophyBob 2.6s ease-in-out infinite}
+        .winner{font-weight:900;font-size:clamp(.95rem,2vw,1.2rem);text-align:center}
+        .winner.empty{color:rgba(255,255,255,.28);font-weight:600;font-size:.75rem}
+        .rgb{animation:rgbName 3s ease-in-out infinite}
+        .img-hint{color:rgba(255,180,100,.45);font-size:.68rem;font-weight:700;letter-spacing:.2px}
 
         /* مودال الصورة */
-        .image-modal{position:fixed;inset:0;background:rgba(0,0,0,.95);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(4px);animation:fadeIn .3s ease-out}
-        .image-modal-content{position:relative;max-width:90vw;max-height:90vh;display:flex;align-items:center;justify-content:center}
-        .image-modal-img{width:100%;height:100%;object-fit:contain;border-radius:12px;box-shadow:0 25px 50px rgba(0,0,0,.8)}
-        .image-modal-close{position:absolute;top:20px;right:20px;background:rgba(255,255,255,.1);border:none;color:#fff;width:44px;height:44px;border-radius:50%;font-size:28px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;z-index:1001}
-        .image-modal-close:hover{background:rgba(255,255,255,.2);transform:scale(1.1)}
+        .modal{position:fixed;inset:0;background:rgba(0,0,0,.94);display:flex;align-items:center;justify-content:center;z-index:1000;backdrop-filter:blur(5px);animation:fadeIn .25s ease}
+        .modal-inner{position:relative;max-width:90vw;max-height:90vh;display:flex;align-items:center;justify-content:center}
+        .modal-img{max-width:100%;max-height:90vh;object-fit:contain;border-radius:10px;box-shadow:0 20px 50px rgba(0,0,0,.8)}
+        .modal-close{position:absolute;top:-16px;right:-16px;background:rgba(255,255,255,.12);border:none;color:#fff;width:40px;height:40px;border-radius:50%;font-size:22px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s,transform .2s}
+        .modal-close:hover{background:rgba(255,255,255,.22);transform:scale(1.1)}
       `}</style>
 
       <div className="lp-root">
 
-        {/* ===== HERO ===== */}
-        <div className="lp-hero">
+        {/* ═══ HERO ═══ */}
+        <div className="hero">
+          {/* خلفية متدرجة */}
+          <div className="hero-bg" />
 
           {/* شعاعات الضوء */}
-          <div className="lp-rays">
-            <div className="lp-ray" />
-            <div className="lp-ray" />
-            <div className="lp-ray" />
-            <div className="lp-ray" />
-            <div className="lp-ray" />
-            <div className="lp-ray" />
-            <div className="lp-ray" />
-            <div className="lp-ray" />
+          <div className="rays">
+            {Array.from({ length: 9 }).map((_, i) => <div key={i} className="ray" />)}
           </div>
 
           {/* لوحتان جانبيتان */}
-          <div className="lp-panel lp-panel-l" />
-          <div className="lp-panel lp-panel-r" />
+          <div className="panels" style={{ position: "absolute", inset: 0, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", pointerEvents: "none", zIndex: 2 }}>
+            {/* اليسار */}
+            <div style={{ display: "flex", gap: 8, padding: "12px 14px", alignItems: "stretch" }}>
+              <div className="panel" />
+              <div className="panel" />
+            </div>
+            {/* المنتصف - فارغ */}
+            <div />
+            {/* اليمين */}
+            <div style={{ display: "flex", gap: 8, padding: "12px 14px", alignItems: "stretch", justifyContent: "flex-end" }}>
+              <div className="panel" />
+            </div>
+          </div>
 
-          {/* لهب */}
-          <img className="lp-flame lp-flame-l" src={flameLeft} alt="" />
-          <img className="lp-flame lp-flame-r" src={flameRight} alt="" />
+          {/* اللهب على الجانبين */}
+          <img className="flame flame-left" src={flameLeft} alt="" />
+          <img className="flame flame-right" src={flameRight} alt="" />
 
           {/* شريط التنقل */}
-          <nav className="lp-nav">
-            <div className="lp-nav-social">
-              <a className="lp-nav-icon" href="https://discord.gg/ArYbJ9McA" target="_blank" rel="noopener noreferrer" aria-label="ديسكورد">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.24.5a14.6 14.6 0 0 1 4.3 1.7 16.5 16.5 0 0 0-14.9 0 14 14 0 0 1 4.3-1.7L8.6 3a19.8 19.8 0 0 0-4.9 1.4C1 9 .3 13.6.6 18a20 20 0 0 0 6 3l1-1.6a12.7 12.7 0 0 1-1.9-.9l.5-.4a14.2 14.2 0 0 0 12 0l.5.4a12.7 12.7 0 0 1-1.9.9l1 1.6a20 20 0 0 0 6-3c.4-5-.7-9.6-3.5-13.6ZM8.7 15.2c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"/></svg>
+          <nav className="nav">
+            <div className="nav-icons">
+              <a className="nav-icon" href="https://discord.gg/ArYbJ9McA" target="_blank" rel="noopener noreferrer" aria-label="ديسكورد">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.24.5a14.6 14.6 0 0 1 4.3 1.7 16.5 16.5 0 0 0-14.9 0 14 14 0 0 1 4.3-1.7L8.6 3a19.8 19.8 0 0 0-4.9 1.4C1 9 .3 13.6.6 18a20 20 0 0 0 6 3l1-1.6a12.7 12.7 0 0 1-1.9-.9l.5-.4a14.2 14.2 0 0 0 12 0l.5.4a12.7 12.7 0 0 1-1.9.9l1 1.6a20 20 0 0 0 6-3c.4-5-.7-9.6-3.5-13.6ZM8.7 15.2c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z" />
+                </svg>
               </a>
-              <a className="lp-nav-icon" href="https://kick.com/ik3mo" target="_blank" rel="noopener noreferrer" aria-label="كيك">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M2 2h5v6.3L12 2h6l-6.6 8L18.5 22h-6.2l-4-6-1.3 1.5V22H2V2Z"/></svg>
+              <a className="nav-icon" href="https://kick.com/ik3mo" target="_blank" rel="noopener noreferrer" aria-label="كيك">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+                  <path d="M2 2h5v6.3L12 2h6l-6.6 8L18.5 22h-6.2l-4-6-1.3 1.5V22H2V2Z" />
+                </svg>
               </a>
             </div>
-            <a className="lp-watch-btn" href="/live">
-              <span className="lp-watch-dot" />
+            <a className="watch-btn" href="/live">
+              <span className="live-dot" />
               مشاهدة البطولة
             </a>
           </nav>
 
-          {/* الشعار + الاسم + السطر الفرعي */}
-          <div className="lp-hero-content">
-            <div className="lp-bomb-wrap">
-              {/* شعار القنبلة — SVG */}
-              <svg className="lp-bomb-svg" viewBox="0 0 160 170" xmlns="http://www.w3.org/2000/svg">
-                {/* هالة التوهج */}
-                <radialGradient id="bombGlow" cx="50%" cy="55%" r="45%">
-                  <stop offset="0%" stopColor="#FF8C00" stopOpacity=".7"/>
-                  <stop offset="100%" stopColor="#FF4500" stopOpacity="0"/>
-                </radialGradient>
-                <ellipse cx="80" cy="100" rx="62" ry="58" fill="url(#bombGlow)"/>
-
-                {/* الفتيل */}
-                <path d="M80 42 Q92 22 106 18 Q118 14 116 26 Q114 36 102 34 Q90 32 84 44"
-                  stroke="#8B4513" strokeWidth="4" fill="none" strokeLinecap="round"/>
-                {/* شرارة */}
-                <circle cx="116" cy="26" r="5" fill="#FFD700">
-                  <animate attributeName="r" values="4;7;4" dur=".8s" repeatCount="indefinite"/>
-                  <animate attributeName="opacity" values="1;.5;1" dur=".8s" repeatCount="indefinite"/>
-                </circle>
-                <circle cx="116" cy="26" r="3" fill="#fff">
-                  <animate attributeName="r" values="2;4;2" dur=".8s" repeatCount="indefinite"/>
-                </circle>
-
-                {/* جسم القنبلة */}
-                <linearGradient id="bombBody" x1="30%" y1="20%" x2="70%" y2="90%">
-                  <stop offset="0%" stopColor="#3a3a3a"/>
-                  <stop offset="100%" stopColor="#111"/>
-                </linearGradient>
-                <circle cx="80" cy="105" r="52" fill="url(#bombBody)"/>
-                <circle cx="80" cy="105" r="52" fill="none" stroke="#555" strokeWidth="2.5"/>
-
-                {/* لمعة علوية */}
-                <ellipse cx="63" cy="82" rx="18" ry="11" fill="rgba(255,255,255,.12)" transform="rotate(-30 63 82)"/>
-
-                {/* حاجب أيسر (غاضب) */}
-                <line x1="52" y1="88" x2="72" y2="96" stroke="white" strokeWidth="5" strokeLinecap="round"/>
-                {/* حاجب أيمن */}
-                <line x1="108" y1="88" x2="88" y2="96" stroke="white" strokeWidth="5" strokeLinecap="round"/>
-
-                {/* عين يسرى × */}
-                <line x1="57" y1="101" x2="69" y2="113" stroke="white" strokeWidth="4.5" strokeLinecap="round"/>
-                <line x1="69" y1="101" x2="57" y2="113" stroke="white" strokeWidth="4.5" strokeLinecap="round"/>
-                {/* عين يمنى × */}
-                <line x1="91" y1="101" x2="103" y2="113" stroke="white" strokeWidth="4.5" strokeLinecap="round"/>
-                <line x1="103" y1="101" x2="91" y2="113" stroke="white" strokeWidth="4.5" strokeLinecap="round"/>
-
-                {/* فم غاضب */}
-                <path d="M62 126 Q80 118 98 126" stroke="white" strokeWidth="4" fill="none" strokeLinecap="round"/>
-                {/* أنياب */}
-                <rect x="71" y="122" width="6" height="9" rx="2" fill="white"/>
-                <rect x="83" y="122" width="6" height="9" rx="2" fill="white"/>
-              </svg>
+          {/* المحتوى المركزي */}
+          <div className="hero-inner">
+            <div className="logo-wrap">
+              <BombLogo />
             </div>
 
-            <h1 className="lp-sitename">XDreemB52</h1>
+            <h1 className="site-name">XDreemB52</h1>
 
-            <p className="lp-subtitle">
-              <span className="lp-subtitle-deco" />
-              ساحة الأبطال منتظرة.. من سيكون البطل القادم؟
-              <span className="lp-subtitle-deco lp-subtitle-deco-r" />
-            </p>
+            <div className="subtitle-row">
+              <LightningDeco />
+              <span className="subtitle-text">ساحة الأبطال منتظرة.. من سيكون البطل القادم؟</span>
+              <LightningDeco flip />
+            </div>
           </div>
         </div>
 
-        {/* ===== قسم الكروت ===== */}
-        <div className="lp-cards-section">
+        {/* ═══ قسم الكروت ═══ */}
+        <div className="cards-section">
           {slots.length > 0 && (
-            <h2 className="lp-cards-title">🏆 أبطال البطولات</h2>
+            <h2 className="cards-title">🏆 أبطال البطولات</h2>
           )}
-
-          <div className="lp-grid">
+          <div className="cards-grid">
             {slots.map((slot, i) => (
-              <div key={i} className="lp-card-wrap" style={{ ["--card-i" as any]: i }}>
-                <div className="lp-card-head">{slot.name || "—"}</div>
+              <div key={i} className="card-wrap" style={{ ["--i" as any]: i }}>
+                <div className="card-label">{slot.name || "—"}</div>
                 <div
-                  className="lp-card"
+                  className="card"
                   style={{
                     cursor: slot.image ? "pointer" : "default",
                     ...(slot.image2 ? { backgroundImage: `url(${slot.image2})` } : {}),
                   }}
                   onClick={() => slot.image && setSelectedImage(slot.image)}
                 >
-                  <div className="lp-card-spotlight">
-                    <div className="lp-card-winner-group">
-                      {slot.winner && <span className="lp-trophy">🏆</span>}
-                      <div className={`lp-card-winner${slot.winner ? "" : " is-empty"}`}>
-                        {slot.winner
-                          ? <span className="rgb-name">{slot.winner}</span>
-                          : slot.empty ? "" : "— لا يوجد فائز —"}
-                      </div>
+                  <div className="card-body">
+                    {slot.winner && <span className="trophy">🏆</span>}
+                    <div className={`winner${slot.winner ? "" : " empty"}`}>
+                      {slot.winner
+                        ? <span className="rgb">{slot.winner}</span>
+                        : "— لا يوجد فائز —"}
                     </div>
-                    {slot.image && <div className="lp-card-hint">اضغط لعرض الصورة</div>}
+                    {slot.image && <span className="img-hint">اضغط لعرض الصورة</span>}
                   </div>
                 </div>
               </div>
@@ -417,10 +523,10 @@ export default function LandingPage() {
       </div>
 
       {selectedImage && (
-        <div className="image-modal" onClick={() => setSelectedImage(null)}>
-          <div className="image-modal-content" onClick={(e) => e.stopPropagation()}>
-            <img className="image-modal-img" src={selectedImage} alt="Tournament" />
-            <button className="image-modal-close" onClick={() => setSelectedImage(null)}>✕</button>
+        <div className="modal" onClick={() => setSelectedImage(null)}>
+          <div className="modal-inner" onClick={(e) => e.stopPropagation()}>
+            <img className="modal-img" src={selectedImage} alt="بطولة" />
+            <button className="modal-close" onClick={() => setSelectedImage(null)}>✕</button>
           </div>
         </div>
       )}
