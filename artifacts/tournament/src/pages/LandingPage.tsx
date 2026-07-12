@@ -8,7 +8,7 @@ import bombLogo  from "@assets/image-0_1783877865511.png";
 import titleImg  from "@assets/{6DCA218D-AAED-4493-B8C3-6AB24C769880}_1783877858889.png";
 
 import { getRecords, useSSE } from "@/lib/api";
-import { type TournamentRecord } from "@/lib/types";
+import { DEFAULT_GAMES, type TournamentRecord } from "@/lib/types";
 
 /* زخرفة البرق على جانبي السطر الفرعي */
 function Lightning({ flip = false }: { flip?: boolean }) {
@@ -33,18 +33,23 @@ export default function LandingPage() {
   useEffect(() => { getRecords().then(setRecords).catch(() => {}); }, []);
   useSSE(() => { getRecords().then(setRecords).catch(() => {}); });
 
-  const slots = useMemo(
-    () =>
-      records
-        .filter((r) => !r.isHidden)
-        .map((r) => ({
-          name:   r.displayName || r.tournamentName,
-          winner: r.winnerName  || "",
-          image:  r.image       || "",
-          image2: r.image2      || "",
-        })),
-    [records],
-  );
+  // نعرض دائماً 6 كروت ثابتة بترتيب DEFAULT_GAMES — نعبّي كل كرت بسجله لو موجود وغير مخفي،
+  // ولو ما فيه سجل بعد أو الأدمن مخفيه، يظهر الكرت فاضي بدل ما يختفي كامل الكرت.
+  const slots = useMemo(() => {
+    const byName = new Map(records.map((r) => [r.tournamentName, r]));
+    return DEFAULT_GAMES.map((game) => {
+      const r = byName.get(game);
+      if (!r || r.isHidden) {
+        return { name: game, winner: "", image: "", image2: "" };
+      }
+      return {
+        name:   r.displayName || r.tournamentName,
+        winner: r.winnerName  || "",
+        image:  r.image       || "",
+        image2: r.image2      || "",
+      };
+    });
+  }, [records]);
 
   return (
     <>
@@ -343,6 +348,37 @@ export default function LandingPage() {
         .card__hint { color: rgba(255,180,100,.42); font-size: .67rem; font-weight: 700; letter-spacing: .2px; }
         .rgb { animation: rgbName 3s ease-in-out infinite; }
 
+        /* ════════════════════════════════
+           FOOTER
+        ════════════════════════════════ */
+        .footer {
+          border-top: 1px solid rgba(255,100,0,.16);
+          padding: 22px 20px 26px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 10px;
+          background: #0e0002;
+        }
+        .footer__socials { display: flex; gap: 14px; }
+        .footer__socials a {
+          width: 38px; height: 38px;
+          border-radius: 50%;
+          display: flex; align-items: center; justify-content: center;
+          color: #FFB347;
+          background: rgba(255,106,0,.08);
+          border: 1px solid rgba(255,106,0,.22);
+          text-decoration: none;
+          transition: transform .2s, background .2s, color .2s;
+        }
+        .footer__socials a:hover { transform: translateY(-2px); background: rgba(255,106,0,.2); color: #fff; }
+        .footer__text {
+          color: rgba(255,180,100,.5);
+          font-size: .78rem;
+          font-weight: 700;
+          text-align: center;
+        }
+
         /* modal */
         .modal { position:fixed; inset:0; background:rgba(0,0,0,.94); display:flex; align-items:center; justify-content:center; z-index:1000; backdrop-filter:blur(5px); animation:fadeIn .25s ease; }
         .modal__inner { position:relative; max-width:90vw; max-height:90vh; display:flex; align-items:center; justify-content:center; }
@@ -416,7 +452,7 @@ export default function LandingPage() {
 
         {/* ═══ قسم الكروت ═══ */}
         <div className="cards">
-          {slots.length > 0 && <h2 className="cards__title">🏆 أبطال البطولات</h2>}
+          <h2 className="cards__title">🏆 أبطال البطولات</h2>
           <div className="cards__grid">
             {slots.map((slot, i) => (
               <div key={i} className="card-wrap" style={{ ["--i" as any]: i }}>
@@ -440,6 +476,23 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+        </div>
+
+        {/* ═══ فوتر ═══ */}
+        <div className="footer">
+          <div className="footer__socials">
+            <a href="https://discord.gg/ArYbJ9McA" target="_blank" rel="noopener noreferrer" aria-label="ديسكورد">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M20.3 4.4A19.8 19.8 0 0 0 15.4 3l-.24.5a14.6 14.6 0 0 1 4.3 1.7 16.5 16.5 0 0 0-14.9 0 14 14 0 0 1 4.3-1.7L8.6 3a19.8 19.8 0 0 0-4.9 1.4C1 9 .3 13.6.6 18a20 20 0 0 0 6 3l1-1.6a12.7 12.7 0 0 1-1.9-.9l.5-.4a14.2 14.2 0 0 0 12 0l.5.4a12.7 12.7 0 0 1-1.9.9l1 1.6a20 20 0 0 0 6-3c.4-5-.7-9.6-3.5-13.6ZM8.7 15.2c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Zm6.6 0c-.9 0-1.6-.8-1.6-1.8s.7-1.8 1.6-1.8 1.6.8 1.6 1.8-.7 1.8-1.6 1.8Z"/>
+              </svg>
+            </a>
+            <a href="https://kick.com/ik3mo" target="_blank" rel="noopener noreferrer" aria-label="كيك">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M2 2h5v6.3L12 2h6l-6.6 8L18.5 22h-6.2l-4-6-1.3 1.5V22H2V2Z"/>
+              </svg>
+            </a>
+          </div>
+          <div className="footer__text">XDreemB52 © {new Date().getFullYear()} — جميع الحقوق محفوظة</div>
         </div>
 
       </div>
