@@ -1,8 +1,9 @@
 import { useEffect, useMemo, useState } from "react";
 
-// الأصول الجديدة
+// الأصول
 import heroBg    from "@assets/image_1783877889862.png";
-import flameImg  from "@assets/{64348214-982E-42FF-A844-8C07F8096007}_1783877846358.png";
+import flameLeft  from "@assets/flame-left.png";
+import flameRight from "@assets/flame-right.png";
 import bombLogo  from "@assets/image-0_1783877865511.png";
 import titleImg  from "@assets/{6DCA218D-AAED-4493-B8C3-6AB24C769880}_1783877858889.png";
 
@@ -123,54 +124,16 @@ export default function LandingPage() {
         .ray:nth-child(6)  { left: 68%; width: 1.8%; background:rgba(255,255,255,.05); }
         .ray:nth-child(7)  { left: 75%; width: 5.5%; }
 
-        /* لوحات جانبية شبه شفافة — مثل المرجع */
-        .hero__panels {
-          position: absolute;
-          inset: 10% 0 10%;
-          display: flex;
-          justify-content: space-between;
-          padding: 0 clamp(90px,13vw,180px);
-          pointer-events: none;
-          z-index: 2;
-        }
-        .panels__left  { display: flex; gap: clamp(6px,1.2vw,12px); }
-        .panels__right { display: flex; gap: clamp(6px,1.2vw,12px); }
-        .panel {
-          width: clamp(30px,5.5vw,66px);
-          background: rgba(255,160,0,.14);
-          border: 1.5px solid rgba(255,220,80,.18);
-          border-radius: 5px;
-        }
-
-        /* ظل داكن على أطراف الهيرو يجعل اللهب بارزاً */
-        .hero::before, .hero::after {
-          content: "";
-          position: absolute;
-          top: 0; bottom: 0;
-          width: clamp(90px,16vw,210px);
-          z-index: 2;
-          pointer-events: none;
-        }
-        .hero::before {
-          left: 0;
-          background: linear-gradient(90deg, rgba(120,20,0,.55) 0%, transparent 100%);
-        }
-        .hero::after {
-          right: 0;
-          background: linear-gradient(270deg, rgba(120,20,0,.55) 0%, transparent 100%);
-        }
-
-        /* اللهب — كلا الجانبين نفس الصورة */
+        /* اللهب الجانبي — صورة كاملة تحتوي النار والألواح */
         .hero__flame {
           position: absolute;
-          bottom: 0;
-          height: 105%;
-          width: clamp(100px,16vw,210px);
+          top: 0;
+          height: 100%;
+          width: clamp(140px,22vw,280px);
           object-fit: cover;
           z-index: 3;
           pointer-events: none;
           animation: flameIn .9s ease .2s both;
-          filter: saturate(1.25) contrast(1.1);
         }
         .hero__flame--left  {
           left: 0;
@@ -178,8 +141,8 @@ export default function LandingPage() {
         }
         .hero__flame--right {
           right: 0;
+          object-position: right center;
           transform: scaleX(-1);
-          object-position: left center;
         }
 
         /* شريط تنقل */
@@ -245,7 +208,7 @@ export default function LandingPage() {
           flex-shrink: 0;
         }
         .hero__logo {
-          width: clamp(120px,17vw,200px);
+          width: clamp(150px,21vw,260px);
           height: auto;
           display: block;
           user-select: none;
@@ -256,15 +219,14 @@ export default function LandingPage() {
 
         /* شعار العنوان — صورة XDreemB52 الذهبية */
         .hero__title-img {
-          width: clamp(160px,28vw,380px);
+          width: clamp(180px,30vw,400px);
           height: auto;
           display: block;
           user-select: none;
           -webkit-user-drag: none;
-          /* إزالة الخلفية الداكنة بـ screen */
           mix-blend-mode: screen;
           animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
-          filter: drop-shadow(0 2px 8px rgba(255,180,0,.5));
+          filter: drop-shadow(0 2px 10px rgba(255,180,0,.6));
         }
 
         /* سطر فرعي */
@@ -402,20 +364,9 @@ export default function LandingPage() {
             {Array.from({ length: 7 }).map((_, i) => <div key={i} className="ray" />)}
           </div>
 
-          {/* لوحات شفافة — يسار: 2، يمين: 1 */}
-          <div className="hero__panels">
-            <div className="panels__left">
-              <div className="panel" />
-              <div className="panel" />
-            </div>
-            <div className="panels__right">
-              <div className="panel" />
-            </div>
-          </div>
-
-          {/* اللهب — نفس الصورة، اليمين مرآة */}
-          <img className="hero__flame hero__flame--left"  src={flameImg} alt="" aria-hidden="true" />
-          <img className="hero__flame hero__flame--right" src={flameImg} alt="" aria-hidden="true" />
+          {/* اللهب — flame-left يسار، flame-right يمين مقلوب */}
+          <img className="hero__flame hero__flame--left"  src={flameLeft}  alt="" aria-hidden="true" />
+          <img className="hero__flame hero__flame--right" src={flameRight} alt="" aria-hidden="true" />
 
           {/* شريط تنقل */}
           <nav className="nav">
