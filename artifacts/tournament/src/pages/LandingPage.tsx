@@ -5,7 +5,6 @@ import heroBg    from "@assets/image_1783877889862.png";
 import flameLeft  from "@assets/flame-left.png";
 import flameRight from "@assets/flame-right.png";
 import bombLogo  from "@assets/image-0_1783877865511.png";
-import titleImg  from "@assets/{6DCA218D-AAED-4493-B8C3-6AB24C769880}_1783877858889.png";
 
 import { getRecords, useSSE } from "@/lib/api";
 import { DEFAULT_GAMES, type TournamentRecord } from "@/lib/types";
@@ -222,16 +221,24 @@ export default function LandingPage() {
           animation: logoPulse 3s ease-in-out 1.2s infinite;
         }
 
-        /* شعار العنوان — صورة XDreemB52 الذهبية */
-        .hero__title-img {
-          width: clamp(180px,30vw,400px);
-          height: auto;
-          display: block;
-          user-select: none;
-          -webkit-user-drag: none;
-          mix-blend-mode: screen;
+        /* عنوان XDreemB52 كنص ذهبي بارز (بدل الصورة عشان يطلع واضح وحاد بكل حجم شاشة) */
+        .hero__title-text {
+          font-size: clamp(1.9rem,6vw,3.6rem);
+          font-weight: 900;
+          letter-spacing: .5px;
+          font-family: Cairo, Tajawal, sans-serif;
+          background: linear-gradient(180deg, #FFF3C4 0%, #FFC63A 35%, #FF9900 70%, #E86A00 100%);
+          -webkit-background-clip: text;
+          background-clip: text;
+          color: transparent;
+          -webkit-text-stroke: 1.5px #7a1800;
+          text-shadow:
+            0 2px 0 #7a1800,
+            0 4px 10px rgba(0,0,0,.45),
+            0 0 24px rgba(255,150,0,.55);
           animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
-          filter: drop-shadow(0 2px 10px rgba(255,180,0,.6));
+          direction: ltr;
+          line-height: 1.1;
         }
 
         /* سطر فرعي */
@@ -242,10 +249,16 @@ export default function LandingPage() {
           animation: slideDown .65s cubic-bezier(.22,1,.36,1) .34s both;
         }
         .hero__sub-text {
-          font-size: clamp(.76rem,1.8vw,1rem);
-          font-weight: 700;
-          color: #4a0008;
+          font-size: clamp(.8rem,1.9vw,1.05rem);
+          font-weight: 800;
+          color: #fff8ec;
           white-space: nowrap;
+          text-shadow:
+            0 1px 0 #ffd27a,
+            0 -1px 0 rgba(255,255,255,.6),
+            0 2px 3px rgba(74,0,8,.55),
+            0 0 10px rgba(255,150,0,.4);
+          letter-spacing: .2px;
         }
 
         /* خط أحمر فاصل أسفل الهيرو */
@@ -431,12 +444,8 @@ export default function LandingPage() {
               <img className="hero__logo" src={bombLogo} alt="XDreemB52 Logo" />
             </div>
 
-            {/* عنوان XDreemB52 كصورة ذهبية */}
-            <img
-              className="hero__title-img"
-              src={titleImg}
-              alt="XDreemB52"
-            />
+            {/* عنوان XDreemB52 كنص ذهبي بارز */}
+            <h1 className="hero__title-text">XDreemB52</h1>
 
             {/* سطر فرعي */}
             <div className="hero__sub">
