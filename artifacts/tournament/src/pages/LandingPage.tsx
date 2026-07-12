@@ -246,30 +246,13 @@ export default function LandingPage() {
           animation: logoPulse 3s ease-in-out 1.2s infinite;
         }
 
-        /* عنوان XDreemB52 كنص ذهبي بارز (بدل الصورة عشان يطلع واضح وحاد بكل حجم شاشة) */
-        .hero__title-text {
-          font-size: clamp(1.9rem,6vw,3.6rem);
-          font-weight: 900;
-          letter-spacing: .5px;
-          font-family: Cairo, Tajawal, sans-serif;
-          background: linear-gradient(180deg, #FFF3B0 0%, #FFD23A 45%, #FF8C00 100%);
-          -webkit-background-clip: text;
-          background-clip: text;
-          -webkit-text-fill-color: transparent;
-          color: transparent;
-          -webkit-text-stroke: 3px #3a0900;
-          paint-order: stroke fill;
-          /* حد غامق متعدد الطبقات كبديل يشتغل بكل المتصفحات (Firefox ما يدعم text-stroke) */
-          text-shadow:
-            -2px -2px 0 #3a0900,
-             2px -2px 0 #3a0900,
-            -2px  2px 0 #3a0900,
-             2px  2px 0 #3a0900,
-             0    4px 0 #2a0600,
-             0    0  18px rgba(0,0,0,.35);
+        /* عنوان XDreemB52 — SVG بتدرج مضمون بكل المتصفحات */
+        .hero__title-svg {
+          width: clamp(230px, 34vw, 430px);
+          height: auto;
+          display: block;
           animation: slideDown .65s cubic-bezier(.22,1,.36,1) .22s both;
-          direction: ltr;
-          line-height: 1.1;
+          filter: drop-shadow(0 4px 10px rgba(0,0,0,.35));
         }
 
         /* سطر فرعي */
@@ -476,8 +459,30 @@ export default function LandingPage() {
               <img className="hero__logo" src={bombLogo} alt="XDreemB52 Logo" />
             </div>
 
-            {/* عنوان XDreemB52 كنص ذهبي بارز */}
-            <h1 className="hero__title-text">XDreemB52</h1>
+            {/* عنوان XDreemB52 كـ SVG بتدرج مضمون (يشتغل بنفس الشكل بكل المتصفحات) */}
+            <svg className="hero__title-svg" viewBox="0 0 430 90" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="titleGold" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%"  stopColor="#FFF3B0" />
+                  <stop offset="45%" stopColor="#FFD23A" />
+                  <stop offset="100%" stopColor="#FF8C00" />
+                </linearGradient>
+              </defs>
+              <text
+                x="215" y="62"
+                textAnchor="middle"
+                fontFamily="Cairo, Tajawal, sans-serif"
+                fontWeight="900"
+                fontSize="56"
+                stroke="#3a0900"
+                strokeWidth="8"
+                strokeLinejoin="round"
+                paintOrder="stroke"
+                fill="url(#titleGold)"
+              >
+                XDreemB52
+              </text>
+            </svg>
 
             {/* سطر فرعي */}
             <div className="hero__sub">
