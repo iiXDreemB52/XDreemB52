@@ -493,7 +493,7 @@ export default function LandingPage() {
 
         {/* ═══ قسم الكروت ═══ */}
         <div className="cards">
-          <h2 className="cards__title">🏆 أبطال البطولات</h2>
+          <h2 className="cards__title">بل البطولات</h2>
           {slots.length === 0 ? (
             <div style={{ textAlign: "center", opacity: 0.6, padding: "30px 10px", fontWeight: 700 }}>
               لا يوجد كروت بعد — تظهر هنا فور ما يضيفها الأدمن.
