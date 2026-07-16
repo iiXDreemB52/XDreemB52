@@ -6,7 +6,7 @@ import flameRight from "@assets/flame-right.png";
 import bombLogo  from "@assets/image-0_1783877865511.png";
 
 import { getRecords, useSSE } from "@/lib/api";
-import { DEFAULT_GAMES, type TournamentRecord } from "@/lib/types";
+import type { TournamentRecord } from "@/lib/types";
 
 /* زخرفة البرق على جانبي السطر الفرعي */
 function Lightning({ flip = false }: { flip?: boolean }) {
@@ -31,22 +31,17 @@ export default function LandingPage() {
   useEffect(() => { getRecords().then(setRecords).catch(() => {}); }, []);
   useSSE(() => { getRecords().then(setRecords).catch(() => {}); });
 
-  // نعرض دائماً 6 كروت ثابتة بترتيب DEFAULT_GAMES — نعبّي كل كرت بسجله لو موجود وغير مخفي،
-  // ولو ما فيه سجل بعد أو الأدمن مخفيه، يظهر الكرت فاضي بدل ما يختفي كامل الكرت.
+  // ما نعرض كرت إلا إذا الأدمن ضافه فعليًا (سجل موجود بقاعدة البيانات) وغير مخفي.
+  // ما فيه كروت فاضية/ثابتة — الكرت يظهر فقط بعد ما يضيفه الأدمن من صفحة الإدارة.
   const slots = useMemo(() => {
-    const byName = new Map(records.map((r) => [r.tournamentName, r]));
-    return DEFAULT_GAMES.map((game) => {
-      const r = byName.get(game);
-      if (!r || r.isHidden) {
-        return { name: game, winner: "", image: "", image2: "" };
-      }
-      return {
+    return records
+      .filter((r) => !r.isHidden)
+      .map((r) => ({
         name:   r.displayName || r.tournamentName,
         winner: r.winnerName  || "",
         image:  r.image       || "",
         image2: r.image2      || "",
-      };
-    });
+      }));
   }, [records]);
 
   return (
@@ -499,6 +494,11 @@ export default function LandingPage() {
         {/* ═══ قسم الكروت ═══ */}
         <div className="cards">
           <h2 className="cards__title">🏆 أبطال البطولات</h2>
+          {slots.length === 0 ? (
+            <div style={{ textAlign: "center", opacity: 0.6, padding: "30px 10px", fontWeight: 700 }}>
+              لا يوجد كروت بعد — تظهر هنا فور ما يضيفها الأدمن.
+            </div>
+          ) : (
           <div className="cards__grid">
             {slots.map((slot, i) => (
               <div key={i} className="card-wrap" style={{ ["--i" as any]: i }}>
@@ -522,6 +522,7 @@ export default function LandingPage() {
               </div>
             ))}
           </div>
+          )}
         </div>
 
         {/* ═══ فوتر ═══ */}
